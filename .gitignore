@@ -28,6 +28,7 @@ dist-ssr
 *.local
 
 /vault
-/migrations/temp
-/infrastructure/mariadb/data
+/database/migrations/temp
+/database/migrations/vault
 /infrastructure/mysql/data
+/infrastructure/mariadb/data
