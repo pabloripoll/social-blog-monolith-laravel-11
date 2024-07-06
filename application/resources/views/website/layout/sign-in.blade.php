@@ -7,11 +7,11 @@
         <div class="col-md-10 mx-auto col-lg-5">
             <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control rounded-3" name="username" placeholder="name@example.com">
+                    <input type="email" class="form-control rounded-3" name="username" id="username" placeholder="name@example.com">
                     <label for="username">Email address</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control rounded-3" name="password" placeholder="Password">
+                    <input type="password" class="form-control rounded-3" name="password" id="password" placeholder="Password">
                     <label for="password">Password</label>
                 </div>
                 <div id="login-status">
