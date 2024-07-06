@@ -23,8 +23,8 @@ lerna-debug.log*
 .env.production
 vendor
 node_modules
-dist
-dist-ssr
+#dist
+#dist-ssr
 *.local
 
 /vault
