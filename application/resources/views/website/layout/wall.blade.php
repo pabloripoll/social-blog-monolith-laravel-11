@@ -1,11 +1,11 @@
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-3">
+        <nav class="col-2">
             @include('website.layout.wall-sidebar')
         </nav>
-        <main class="col-9">
+        <main class="col-10">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-9">
                     <h3 class="pb-4 mb-4 border-bottom">
                         Members Walls
                     </h3>
@@ -33,7 +33,7 @@
                     </nav>
                 </div><!-- /.wall -->
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="position-sticky" style="top: 2rem;">
                         <div class="p-4 mb-3 bg-body-tertiary rounded">
                             <h4>About</h4>
