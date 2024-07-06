@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Support\Debug;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Blog\PostController;
+use App\Http\Controllers\Blog\WallController;
 
 class PublicWebRouter
 {
@@ -68,7 +69,7 @@ class PublicWebRouter
     {
         $content = new \stdClass;
 
-        $content->result = (new BlogController)->listing($category, $paginate);
+        $content->result = (new WallController)->listing($category, $paginate);
 
         $content->layout = 'wall';
 
@@ -84,7 +85,7 @@ class PublicWebRouter
     {
         $content = new \stdClass;
 
-        $content->result = (new BlogController)->listing($category, $paginate);
+        $content->result = (new WallController)->listing($category, $paginate);
 
         $content->layout = 'profile';
 
