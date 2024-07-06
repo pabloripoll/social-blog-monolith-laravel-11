@@ -59,3 +59,6 @@
         </div>
     </div>
 </div>
+
+<script src="/theme/bootstrap/custom/js/support.js?v={{ rand(10000, 100000) }}"></script>
+<script src="/theme/bootstrap/custom/js/login.js?v={{ rand(10000, 100000) }}"></script>
