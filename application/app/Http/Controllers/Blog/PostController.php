@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Blog;
 
 use Domain\Blog;
 use App\Support\Debug;
 use Illuminate\Http\Request;
 
-class BlogController
+class PostController
 {
     public function listing(?string $category = null, ?int $paginate = null)
     {
@@ -27,7 +27,7 @@ class BlogController
         return [];
     }
 
-    public function post(?int $pid = null)
+    public function getPost(?int $pid = null)
     {
         /*
         $input = Blog::post()->validate()->pid($pid);
@@ -41,7 +41,7 @@ class BlogController
         return [];
     }
 
-    public function comments(?int $post_pid = null)
+    public function getPostComments(?int $post_pid = null)
     {
         /*
         $input = Blog::post()->validate()->pid($pid);

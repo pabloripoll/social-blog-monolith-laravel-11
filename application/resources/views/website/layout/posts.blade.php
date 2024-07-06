@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <nav class="col-2">
-            @include('website.layout.blog-sidebar')
+            @include('website.layout.posts-sidebar')
         </nav>
         <main class="col-10">
             <div class="row">

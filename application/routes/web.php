@@ -23,12 +23,12 @@ Route::get('/exit', [PublicWebRouter::class, 'exit']);
 Route::get('/sign-in{extension}', [PublicWebRouter::class, 'signInLayout'])->where('extension', '(?:.html)?');
 Route::get('/sign-up{extension}', [PublicWebRouter::class, 'signUpLayout'])->where('extension', '(?:.html)?');
 
-Route::get('/home{extension}', [PublicWebRouter::class, 'blogContent'])->where('extension', '(?:.html)?');
-Route::get('/posts{extension}', [PublicWebRouter::class, 'blogContent'])->where('extension', '(?:.html)?');
-Route::get('/home/{category?}/{page?}', [PublicWebRouter::class, 'blogContent']);
-Route::get('/posts/{category?}/{page?}', [PublicWebRouter::class, 'blogContent']);
-Route::post('/home', [PublicWebRouter::class, 'asyncBlogContent']);
-Route::post('/posts', [PublicWebRouter::class, 'asyncBlogContent']);
+Route::get('/home{extension}', [PublicWebRouter::class, 'postsContent'])->where('extension', '(?:.html)?');
+Route::get('/posts{extension}', [PublicWebRouter::class, 'postsContent'])->where('extension', '(?:.html)?');
+Route::get('/home/{category?}/{page?}', [PublicWebRouter::class, 'postsContent']);
+Route::get('/posts/{category?}/{page?}', [PublicWebRouter::class, 'postsContent']);
+Route::post('/home', [PublicWebRouter::class, 'asyncPostsContent']);
+Route::post('/posts', [PublicWebRouter::class, 'asyncPostsContent']);
 
 Route::get('/post/{pid}/{slug}{extension}', [PublicWebRouter::class, 'postContent'])->where('extension', '(?:.html)?');
 Route::post('/post', [PublicWebRouter::class, 'asyncPostContent']);

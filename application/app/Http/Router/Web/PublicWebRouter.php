@@ -5,7 +5,7 @@ namespace App\Http\Router\Web;
 use Carbon\Carbon;
 use App\Support\Debug;
 use Illuminate\Http\Request;
-use App\Http\Controllers\BlogController;
+use App\Http\Controllers\Blog\PostController;
 
 class PublicWebRouter
 {
@@ -32,27 +32,27 @@ class PublicWebRouter
         return view('website.template', (array) $content);
     }
 
-    public function blogContent(?string $category = null, ?int $paginate = null)
+    public function postsContent(?string $category = null, ?int $paginate = null)
     {
         $content = new \stdClass;
 
-        $content->result = (new BlogController)->listing($category, $paginate);
+        $content->result = (new PostController)->listing($category, $paginate);
 
-        $content->layout = 'blog';
+        $content->layout = 'posts';
 
         return view('website.template', (array) $content);
     }
 
-    public function asyncBlogContent()
+    public function asyncPostsContent()
     {
-        return view('website.layout.blog', []);
+        return view('website.layout.posts', []);
     }
 
     public function postContent(?int $pid = null)
     {
         $content = new \stdClass;
 
-        //$content->result = (new BlogController)->listing($category, $paginate);
+        $content->result = (new PostController)->getPost($pid);
 
         $content->layout = 'post';
 
