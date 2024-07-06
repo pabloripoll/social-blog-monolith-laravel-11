@@ -40,7 +40,6 @@
                     </svg>
                     Sign up with Facebook
                 </button>
-
             </form>
         </div>
     </div>

@@ -124,8 +124,10 @@ username.focus()
 
 resetLoginStatus()
 
-form[0].addEventListener('submit', event => {
-    event.preventDefault()
-})
+for (let i = 0; i < form.length; i++) {
+    form[i].addEventListener('submit', event => {
+        event.preventDefault()
+    })
+}
 
 window.addEventListener('wheel', { passive: false })
