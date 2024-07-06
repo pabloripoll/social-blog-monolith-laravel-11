@@ -19,7 +19,7 @@ function formEnabled() {
     submitButton.disabled = false
     submitButton.classList.remove('btn-default')
     submitButton.classList.add('btn-primary')
-    submitButton.innerHTML = `SIGN UP <i class="fas fa-sign-in"></i>`
+    submitButton.innerHTML = `SIGN IN <i class="fas fa-sign-in"></i>`
 }
 
 function formDisabled() {

@@ -6,17 +6,18 @@
         </div>
         <div class="col-md-10 mx-auto col-lg-5">
             <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
-
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com">
-                    <label for="floatingInput">Email address</label>
+                    <input type="email" class="form-control rounded-3" name="username" placeholder="name@example.com">
+                    <label for="username">Email address</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password">
-                    <label for="floatingPassword">Password</label>
+                    <input type="password" class="form-control rounded-3" name="password" placeholder="Password">
+                    <label for="password">Password</label>
                 </div>
-                <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Sign in</button>
-                <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+                <div id="login-status">
+                    <div class="alert alert-light fade show alert-dismissible" role="alert">&nbsp;</div>
+                </div>
+                <button type="submit" id="submit-button" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary">SIGN IN <i class="fas fa-sign-in"></i></button>
 
                 <hr class="my-4">
 
