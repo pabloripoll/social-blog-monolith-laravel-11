@@ -2,57 +2,105 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Domain\Blog;
+use Domain\Member;
 use App\Support\Debug;
 use Illuminate\Http\Request;
 
-class BlogController
+class MemberAuthController
 {
-    public function listing()
+    public function createSession(object $user): array | object
     {
-        $category = $category ?? 'all';
-        $paginate = $paginate ?? '1';
+        $response = new \stdClass;
 
-        /*
-        $input = Blog::category()->validate()->name($category);
-        if (! $input->safe) {
+        $session = Member::session()->set([
+            'user_id' => $user->id
+        ]);
 
-        }
+        $response->session = [
+            'toke' => $session->token
+        ];
 
-        $category_id = Blog::category()->get()->byName($category);
-
-        $result = Blog::posts()->get()->all($category_id, $paginate);
-        */
-
-        return [];
+        return $response;
     }
 
-    public function post(?int $pid = null)
+    public function updateSession(object $user): array | object
     {
-        /*
-        $input = Blog::post()->validate()->pid($pid);
-        if (! $input->is_valid) {
+        $response = new \stdClass;
 
-        }
+        $response->session = Member::session()->set([
+            'user_id' => $user->id
+        ]);
 
-        $post = Blog::posts()->get()->byPid($category_id, $paginate);
-        */
-
-        return [];
+        return $response;
     }
 
-    public function comments(?int $post_pid = null)
+    public function terminateSession(?int $session_token): array | object
     {
-        /*
-        $input = Blog::post()->validate()->pid($pid);
-        if (! $input->is_valid) {
+        $response = new \stdClass;
+
+        $response->session = Member::session()->delete($session_token);
+
+        return $response;
+    }
+
+    public function login(object $request): array | object
+    {
+        $input = Member::user()->object()->is_valid([
+            'alias' => $request->alias ?? null,
+            'username' => $request->username ?? null,
+            'password' => $request->password ?? null
+        ]);
+
+        $response = new \stdClass;
+
+        if ($input->errors) {
 
         }
 
-        $post = Blog::posts()->get()->byPid($category_id, $paginate);
-        */
+        $user = Member::user()->get()->byLogin([
+            'username' => $input->username,
+            'password' => $input->password
+        ]);
 
-        return [];
+        $session = $this->createSession($user);
+
+        return $response;
+    }
+
+    public function register(object $request): array | object
+    {
+        $input = Member::user()->object()->is_valid([
+            'alias' => $request->alias ?? null,
+            'username' => $request->username ?? null,
+            'password' => $request->password ?? null
+        ]);
+
+        $response = new \stdClass;
+
+        if ($input->errors) {
+
+        }
+
+        $user = Member::user()->set([
+            'alias' => $input->alias,
+            'username' => $input->username,
+            'password' => $input->password
+        ]);
+
+        $profile = Member::profile()->set([
+            'user_id' => $user->id,
+            'username' => $input->username,
+            'password' => $input->password
+        ]);
+
+        $session = $this->createSession($user);
+
+        return $response;
+    }
+
+    public function createToken()
+    {
+
     }
 
 }

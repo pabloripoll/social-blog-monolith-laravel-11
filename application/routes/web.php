@@ -2,7 +2,7 @@
 
 use App\Http\Router\Bootstrap;
 use Illuminate\Support\Facades\Route;
-use App\Http\Router\Web\PublicWebRouter;
+use App\Http\Router\Web\WebPublicRouter;
 
 /*
 |-----------------------------------------------------------------------  /
@@ -19,27 +19,27 @@ Route::group(['prefix' => 'bootstrap'], function () {
 |----------------------------------------------------------------------- */
 Route::redirect('/', '/posts.html');
 
-Route::get('/exit', [PublicWebRouter::class, 'exit']);
-Route::get('/sign-in{extension}', [PublicWebRouter::class, 'signInLayout'])->where('extension', '(?:.html)?');
-Route::get('/sign-up{extension}', [PublicWebRouter::class, 'signUpLayout'])->where('extension', '(?:.html)?');
+Route::get('/exit', [WebPublicRouter::class, 'exit']);
+Route::get('/sign-in{extension}', [WebPublicRouter::class, 'signInLayout'])->where('extension', '(?:.html)?');
+Route::get('/sign-up{extension}', [WebPublicRouter::class, 'signUpLayout'])->where('extension', '(?:.html)?');
 
-Route::get('/home{extension}', [PublicWebRouter::class, 'postsContent'])->where('extension', '(?:.html)?');
-Route::get('/posts{extension}', [PublicWebRouter::class, 'postsContent'])->where('extension', '(?:.html)?');
-Route::get('/home/{category?}/{page?}', [PublicWebRouter::class, 'postsContent']);
-Route::get('/posts/{category?}/{page?}', [PublicWebRouter::class, 'postsContent']);
-Route::post('/home', [PublicWebRouter::class, 'asyncPostsContent']);
-Route::post('/posts', [PublicWebRouter::class, 'asyncPostsContent']);
+Route::get('/home{extension}', [WebPublicRouter::class, 'postsContent'])->where('extension', '(?:.html)?');
+Route::get('/posts{extension}', [WebPublicRouter::class, 'postsContent'])->where('extension', '(?:.html)?');
+Route::get('/home/{category?}/{page?}', [WebPublicRouter::class, 'postsContent']);
+Route::get('/posts/{category?}/{page?}', [WebPublicRouter::class, 'postsContent']);
+Route::post('/home', [WebPublicRouter::class, 'asyncPostsContent']);
+Route::post('/posts', [WebPublicRouter::class, 'asyncPostsContent']);
 
-Route::get('/post/{pid}/{slug}{extension}', [PublicWebRouter::class, 'postContent'])->where('extension', '(?:.html)?');
-Route::post('/post', [PublicWebRouter::class, 'asyncPostContent']);
+Route::get('/post/{pid}/{slug}{extension}', [WebPublicRouter::class, 'postContent'])->where('extension', '(?:.html)?');
+Route::post('/post', [WebPublicRouter::class, 'asyncPostContent']);
 
-Route::get('/wall{extension}', [PublicWebRouter::class, 'wallContent'])->where('extension', '(?:.html)?');
-Route::post('/wall', [PublicWebRouter::class, 'asyncWallContent']);
+Route::get('/wall{extension}', [WebPublicRouter::class, 'wallContent'])->where('extension', '(?:.html)?');
+Route::post('/wall', [WebPublicRouter::class, 'asyncWallContent']);
 
-Route::get('/profiles/{pid?}', [PublicWebRouter::class, 'profileContent']);
-Route::post('/profiles', [PublicWebRouter::class, 'asyncProfileContent']);
-Route::get('/profiles/{pid}/posts', [PublicWebRouter::class, 'profilePostsContent']);
-Route::post('/profiles/posts', [PublicWebRouter::class, 'asyncProfilePostsContent']);
+Route::get('/profiles/{pid?}', [WebPublicRouter::class, 'profileContent']);
+Route::post('/profiles', [WebPublicRouter::class, 'asyncProfileContent']);
+Route::get('/profiles/{pid}/posts', [WebPublicRouter::class, 'profilePostsContent']);
+Route::post('/profiles/posts', [WebPublicRouter::class, 'asyncProfilePostsContent']);
 
 /*
 |-----------------------------------------------------------------------  /

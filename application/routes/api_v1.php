@@ -1,12 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Router\Api\ApiAuthRouter;
 
-/* Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum'); */
-
-Route::post('/auth/register', function (Request $request) {
-    return response()->json(['test' => true]);
-});
+/*
+|-----------------------------------------------------------------------  /
+| Auth
+|----------------------------------------------------------------------- */
+Route::post('/auth/register', [ApiAuthRouter::class, 'register']);

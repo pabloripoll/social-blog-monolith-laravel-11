@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\Blog\WallController;
 
-class PublicWebRouter
+class WebPublicRouter
 {
     public function exit()
     {
