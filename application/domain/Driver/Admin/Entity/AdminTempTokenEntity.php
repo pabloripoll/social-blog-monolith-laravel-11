@@ -19,11 +19,6 @@ class AdminTempTokenEntity implements DomainEntityInterface
         return new AdminTempTokenObject;
     }
 
-    public function validation()
-    {
-        return new AdminTempTokenValidation;
-    }
-
     public function get()
     {
         return new AdminTempTokenRepository;

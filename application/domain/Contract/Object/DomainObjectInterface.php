@@ -6,6 +6,6 @@ interface DomainObjectInterface
 {
     public function validation(): object;
 
-    public function value(object $row = null): object;
+    public function value(object | array $row = null): object;
 
 }

@@ -19,11 +19,6 @@ class AdminImageEntity implements DomainEntityInterface
         return new AdminImageObject;
     }
 
-    public function validation()
-    {
-        return new AdminImageValidation;
-    }
-
     public function get()
     {
         return new AdminImageRepository;

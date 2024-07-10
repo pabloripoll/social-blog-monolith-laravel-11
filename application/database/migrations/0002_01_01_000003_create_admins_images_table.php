@@ -10,7 +10,7 @@ return new class extends Migration
 {
     private function table()
     {
-        Admin::image()->model()->table();
+        return Admin::image()->model()->table();
     }
 
     /**
@@ -20,16 +20,18 @@ return new class extends Migration
     {
         Schema::create($this->table(), function (Blueprint $table) {
             $table->id();
-            $table->foreign('user_id')->references('id')->on(Admin::user()->model()->table());
+            $table->bigInteger('user_id')->unsigned();
             $table->boolean('is_profile')->nullable()->default('0');
             $table->boolean('is_background')->nullable()->default('0');
             $table->boolean('is_selected')->nullable()->default('0');
-            $table->foreign('storage_id')->references('id')->on(Storage::public()->model()->table());
-            $table->string('file_name', length: 128);
+            $table->string('filename', length: 128);
             $table->string('title', length: 64)->nullable();
             $table->string('extension', length: 8);
             $table->integer('position')->default('0');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on(Admin::user()->model()->table());
+            $table->index(['filename', 'title']);
         });
     }
 

@@ -3,14 +3,13 @@
 use Domain\Admin;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
     private function table()
     {
-        Admin::setting()->model()->table();
+        return Admin::tempToken()->model()->table();
     }
 
     /**
@@ -20,9 +19,13 @@ return new class extends Migration
     {
         Schema::create($this->table(), function (Blueprint $table) {
             $table->id();
-            $table->foreign('user_id')->references('id')->on(Admin::user()->model()->table());
-            $table->json('params')->nullable()->default(new Expression('(JSON_ARRAY())'));
+            $table->bigInteger('user_id')->unsigned();
+            $table->boolean('was_used')->default('0');
+            $table->dateTime('expires_at', precision: 0);
+            $table->string('token', length: 64)->unique();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on(Admin::user()->model()->table());
         });
     }
 

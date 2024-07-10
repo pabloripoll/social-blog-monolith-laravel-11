@@ -2,9 +2,9 @@
 
 namespace Domain\Driver\Admin\Entity;
 
-use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Admin\Model\AdminUserModel;
 use Domain\Driver\Admin\Object\AdminUserObject;
+use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Admin\Repository\AdminUserRepository;
 
 class AdminUserEntity implements DomainEntityInterface
@@ -19,11 +19,6 @@ class AdminUserEntity implements DomainEntityInterface
         return new AdminUserObject;
     }
 
-    public function validation()
-    {
-        return new AdminUserValidation;
-    }
-
     public function get()
     {
         return new AdminUserRepository;
@@ -31,6 +26,11 @@ class AdminUserEntity implements DomainEntityInterface
 
     public function save(object | array $input): mixed
     {
+        /* $check = $this->object()->isValid($input);
+        if ($check->has_errors) {
+            return $check;
+        } */
+
         try {
             $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
 
@@ -44,25 +44,6 @@ class AdminUserEntity implements DomainEntityInterface
             ! isset($input->created_by_user_id) ? : $row->created_by_user_id = $input->created_by_user_id;
 
             return $row->save();
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
-        }
-    }
-
-    public function delete(object | int $input): mixed
-    {
-        try {
-            $input_id = ! is_object($input) ? $input : $input->id;
-
-            $row = $this->model()->find($input_id);
-
-            if ($row) {
-                $row->delete();
-            }
-
-            return ! $row ? true : false;
 
         } catch(\Exception $e) {
 

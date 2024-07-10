@@ -9,7 +9,7 @@ return new class extends Migration
 {
     private function table()
     {
-        Admin::session()->model()->table();
+        return Admin::session()->model()->table();
     }
 
     /**
@@ -19,7 +19,7 @@ return new class extends Migration
     {
         Schema::create($this->table(), function (Blueprint $table) {
             $table->id();
-            $table->foreign('user_id')->references('id')->on(Admin::user()->model()->table());
+            $table->bigInteger('user_id')->unsigned();
             $table->string('ip_address', 45)->nullable();
             $table->boolean('in_standby')->default('0');
             $table->boolean('is_opened')->default('0');
@@ -28,6 +28,9 @@ return new class extends Migration
             $table->string('token', length: 64)->unique();
             $table->text('user_agent')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on(Admin::user()->model()->table());
+            $table->index(['ip_address', 'expires_at', 'token']);
         });
     }
 

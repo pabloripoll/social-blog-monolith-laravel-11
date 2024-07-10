@@ -19,7 +19,7 @@ class AdminUserObject extends DomainObjectAbstract implements DomainObjectInterf
     /**
      * Output normalized value or required properties
      */
-    public function value(object $row = null): object
+    public function value(object | array $row = null): object
     {
         $object = new \stdClass;
 
@@ -27,8 +27,7 @@ class AdminUserObject extends DomainObjectAbstract implements DomainObjectInterf
         $object->pid = $row->pid ?? null;
         $object->is_active = $row->is_active ?? null;
         $object->is_banned = $row->is_banned ?? null;
-        $object->banned_id = $row->banned_id ?? null;
-        $object->signature = $row->signature ?? null;
+        $object->username = $row->username ?? null;
         $object->alias = $row->alias ?? null;
         $object->password = $row->password ?? null;
         $object->created_by_user_id = $row->created_by_user_id ?? null;

@@ -45,31 +45,29 @@ class MemberAuthController
 
     public function login(object $request): array | object
     {
-        $input = Member::user()->object()->is_valid([
+        $input = Member::user()->object()->isValid([
             'alias' => $request->alias ?? null,
             'username' => $request->username ?? null,
             'password' => $request->password ?? null
         ]);
 
-        $response = new \stdClass;
-
-        if ($input->errors) {
+        if ($input->has_errors) {
 
         }
 
-        $user = Member::user()->get()->byLogin([
+        $user = Member::user()->get()->forAuth([
             'username' => $input->username,
             'password' => $input->password
         ]);
 
         $session = $this->createSession($user);
 
-        return $response;
+        return [];
     }
 
     public function register(object $request): array | object
     {
-        $input = Member::user()->object()->is_valid([
+        $input = Member::user()->object()->isValid([
             'alias' => $request->alias ?? null,
             'username' => $request->username ?? null,
             'password' => $request->password ?? null

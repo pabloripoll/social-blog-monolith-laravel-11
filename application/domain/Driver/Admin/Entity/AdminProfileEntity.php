@@ -19,11 +19,6 @@ class AdminProfileEntity implements DomainEntityInterface
         return new AdminProfileObject;
     }
 
-    public function validation()
-    {
-        return new AdminProfileValidation;
-    }
-
     public function get()
     {
         return new AdminProfileRepository;

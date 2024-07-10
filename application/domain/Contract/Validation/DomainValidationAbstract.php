@@ -22,7 +22,7 @@ abstract class DomainValidationAbstract
     /**
      * Validation service from infrastructure
      */
-    protected function _val()
+    protected function val()
     {
         return new ValidatorController;
     }

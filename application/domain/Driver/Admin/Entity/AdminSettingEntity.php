@@ -19,11 +19,6 @@ class AdminSettingEntity implements DomainEntityInterface
         return new AdminSettingObject;
     }
 
-    public function validation()
-    {
-        return new AdminSettingValidation;
-    }
-
     public function get()
     {
         return new AdminSettingRepository;

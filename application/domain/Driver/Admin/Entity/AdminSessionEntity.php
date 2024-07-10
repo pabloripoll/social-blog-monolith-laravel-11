@@ -19,11 +19,6 @@ class AdminSessionEntity implements DomainEntityInterface
         return new AdminSessionObject;
     }
 
-    public function validation()
-    {
-        return new AdminSessionValidation;
-    }
-
     public function get()
     {
         return new AdminSessionRepository;

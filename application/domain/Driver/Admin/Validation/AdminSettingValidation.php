@@ -13,17 +13,17 @@ class AdminSessionValidation extends DomainValidationAbstract
 {
     public function id($value)
     {
-        return $this->_val()->id($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+        return $this->val()->id($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
     }
 
     public function user_id($value)
     {
-        return $this->_val()->id($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+        return $this->val()->id($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
     }
 
     public function params($value)
     {
-        return $this->_val()->json($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+        return $this->val()->json($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
     }
 
 }

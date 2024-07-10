@@ -7,7 +7,7 @@ use App\Support\Debug;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\MemberAuthController;
 
-class ApiAuthRouter
+class ApiAuthMemberRouter
 {
     public function login(Request $request)
     {

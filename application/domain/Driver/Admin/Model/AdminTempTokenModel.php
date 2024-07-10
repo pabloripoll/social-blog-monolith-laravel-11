@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Driver\Admin\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-abstract class AdminUserModel extends Model
+class AdminTempTokenModel extends Model
 {
     /**
      * The attributes that are mass assignable.

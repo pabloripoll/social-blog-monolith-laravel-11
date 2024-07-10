@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Driver\Admin\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-abstract class AdminUserModel extends Model
+class AdminUserModel extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -15,7 +15,6 @@ abstract class AdminUserModel extends Model
         'pid',
         'is_active',
         'is_banned',
-        'banned_id',
         'username',
         'alias',
         'password',
@@ -46,7 +45,7 @@ abstract class AdminUserModel extends Model
     /**
      * The table associated with the model.
      */
-    protected $table = 'admins_users';
+    protected $table = 'admins_user';
 
     public function table(): string
     {

@@ -8,12 +8,10 @@ interface DomainEntityInterface
 
     public function object();
 
-    public function validation();
-
     public function get();
 
     public function save(object | array $input): mixed;
 
-    public function delete(object | int $input): mixed;
+    //public function delete(object | int $input): mixed;
 
 }

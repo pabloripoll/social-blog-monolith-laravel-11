@@ -19,7 +19,7 @@ class AdminImageObject extends DomainObjectAbstract implements DomainObjectInter
     /**
      * Output normalized value or required properties
      */
-    public function value(object $row = null): object
+    public function value(object | array $row = null): object
     {
         $object = new \stdClass;
 

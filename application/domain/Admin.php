@@ -8,11 +8,6 @@ use Domain\Driver\Admin\Entity\AdminImageEntity;
 use Domain\Driver\Admin\Entity\AdminSettingEntity;
 use Domain\Driver\Admin\Entity\AdminSessionEntity;
 use Domain\Driver\Admin\Entity\AdminTempTokenEntity;
-use Domain\Driver\Admin\Entity\AdminActivityEntity;
-use Domain\Driver\Admin\Entity\AdminNotificationEntity;
-use Domain\Driver\Admin\Entity\AdminCategoryBannedEntity;
-use Domain\Driver\Admin\Entity\AdminCategoryActivityEntity;
-use Domain\Driver\Admin\Entity\AdminCategoryNotificationEntity;
 
 class Admin
 {
@@ -44,31 +39,6 @@ class Admin
     public static function tempToken()
     {
         return new AdminTempTokenEntity;
-    }
-
-    public static function activity()
-    {
-        return new AdminActivityEntity;
-    }
-
-    public static function notification()
-    {
-        return new AdminNotificationEntity;
-    }
-
-    public static function categoryBanned()
-    {
-        return new AdminCategoryBannedEntity;
-    }
-
-    public static function categoryActivity()
-    {
-        return new AdminCategoryActivityEntity;
-    }
-
-    public static function categoryNotification()
-    {
-        return new AdminCategoryNotificationEntity;
     }
 
 }

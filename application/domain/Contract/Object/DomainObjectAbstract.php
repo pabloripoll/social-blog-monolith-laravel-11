@@ -7,25 +7,18 @@ abstract class DomainObjectAbstract
     /**
      * Check if entity object input properties are safe
      */
-    public function is_safe(object $input)
+    public function isValid(object | array $input)
     {
         $reject = [];
         $passed = [];
         $output = new \stdClass;
-        $validation = $this->validation();
+        $validate = $this->validation();
 
         foreach ($input as $key => $value) {
-            if (! method_exists($validation, $key)){
-                $reject[$key] = $key.' is not an object property';
+            if (! method_exists($validate, $key)){
+                $reject[$key] = $key.' is not an entity property';
             } else {
-                $validation->$key($value) == $value ? $passed[$key] = trim($value) : $reject[$key] = $validation->errors()[$key];
-            }
-        }
-
-        $required = $this->required();
-        foreach ($required as $key) {
-            if (! isset($input->{$key}) || empty($input->{$key})) {
-                $reject[$key] = 'is required';
+                $validate->$key($value) == $value ? $passed[$key] = trim($value) : $reject[$key] = $validate->errors()[$key];
             }
         }
 

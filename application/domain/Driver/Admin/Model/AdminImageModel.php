@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Driver\Admin\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-abstract class AdminUserModel extends Model
+class AdminImageModel extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,14 +12,15 @@ abstract class AdminUserModel extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'pid',
-        'is_active',
-        'is_banned',
-        'banned_id',
-        'username',
-        'alias',
-        'password',
-        'created_by_user_id'
+        'user_id',
+        'is_profile',
+        'is_background',
+        'is_selected',
+        'storage_id',
+        'file_name',
+        'title',
+        'extension',
+        'position'
     ];
 
     /**
