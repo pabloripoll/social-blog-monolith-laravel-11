@@ -2,8 +2,6 @@
 
 namespace App\Support;
 
-use App\Support\Debug;
-
 class Random
 {
     public function key(int $length = 64): string
