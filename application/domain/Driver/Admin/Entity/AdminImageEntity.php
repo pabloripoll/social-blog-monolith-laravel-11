@@ -5,7 +5,9 @@ namespace Domain\Driver\Admin\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Admin\Model\AdminImageModel;
 use Domain\Driver\Admin\Object\AdminImageObject;
-use Domain\Driver\Admin\Repository\AdminImageRepository;
+use Domain\Driver\Admin\Repository\AdminImageGetRepository;
+use Domain\Driver\Admin\Repository\AdminImageSetRepository;
+use Domain\Driver\Admin\Repository\AdminImageDelRepository;
 
 class AdminImageEntity implements DomainEntityInterface
 {
@@ -21,49 +23,29 @@ class AdminImageEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new AdminImageRepository;
+        return new AdminImageGetRepository;
     }
 
-    public function set(object | array $input): mixed
+    public function set(object | array $input = null): mixed
     {
-        try {
-            $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
+        if ($input) {
+            $input = is_object($input) ? $input : (object) $input;
 
-            ! isset($input->user_id) ? : $row->user_id = $input->user_id;
-            ! isset($input->is_profile) ? : $row->is_profile = $input->is_profile;
-            ! isset($input->is_background) ? : $row->is_background = $input->is_background;
-            ! isset($input->is_selected) ? : $row->is_selected = $input->is_selected;
-            ! isset($input->storage_id) ? : $row->storage_id = $input->storage_id;
-            ! isset($input->file_name) ? : $row->file_name = $input->file_name;
-            ! isset($input->title) ? : $row->title = $input->title;
-            ! isset($input->file_extension) ? : $row->file_extension = $input->file_extension;
-            ! isset($input->position) ? : $row->position = $input->position;
-
-            return $row->save();
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new AdminImageSetRepository)->row($input);
         }
+
+        return new AdminImageSetRepository;
     }
 
-    public function delete(object | int $input): mixed
+    public function delete(object | array | int $input = null): mixed
     {
-        try {
-            $input_id = ! is_object($input) ? $input : $input->id;
+        if ($input) {
+            $input = is_array($input) ? (object) $input : $input;
 
-            $row = $this->model()->find($input_id);
-
-            if ($row) {
-                $row->delete();
-            }
-
-            return ! $row ? true : false;
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new AdminImageDelRepository)->row($input);
         }
+
+        return new AdminImageDelRepository;
     }
 
 }

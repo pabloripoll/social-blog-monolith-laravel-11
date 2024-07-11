@@ -2,7 +2,7 @@
 
 namespace Domain\Contract\Repository;
 
-abstract class DomainRepositoryAbstract
+abstract class DomainGetRepositoryAbstract
 {
     /**
      * Domain full/default data transfer object

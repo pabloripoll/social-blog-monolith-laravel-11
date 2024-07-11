@@ -5,7 +5,9 @@ namespace Domain\Driver\Admin\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Admin\Model\AdminProfileModel;
 use Domain\Driver\Admin\Object\AdminProfileObject;
-use Domain\Driver\Admin\Repository\AdminProfileRepository;
+use Domain\Driver\Admin\Repository\AdminProfileGetRepository;
+use Domain\Driver\Admin\Repository\AdminProfileSetRepository;
+use Domain\Driver\Admin\Repository\AdminProfileDelRepository;
 
 class AdminProfileEntity implements DomainEntityInterface
 {
@@ -21,46 +23,29 @@ class AdminProfileEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new AdminProfileRepository;
+        return new AdminProfileGetRepository;
     }
 
-    public function set(object | array $input): mixed
+    public function set(object | array $input = null): mixed
     {
-        try {
-            $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
+        if ($input) {
+            $input = is_object($input) ? $input : (object) $input;
 
-            ! isset($input->user_id) ? : $row->user_id = $input->user_id;
-            ! isset($input->email) ? : $row->email = $input->email;
-            ! isset($input->name) ? : $row->name = $input->name;
-            ! isset($input->surname) ? : $row->surname = $input->surname;
-            ! isset($input->phone) ? : $row->phone = $input->phone;
-            ! isset($input->address) ? : $row->address = $input->address;
-
-            return $row->save();
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new AdminProfileSetRepository)->row($input);
         }
+
+        return new AdminProfileSetRepository;
     }
 
-    public function delete(object | int $input): mixed
+    public function delete(object | array | int $input = null): mixed
     {
-        try {
-            $input_id = ! is_object($input) ? $input : $input->id;
+        if ($input) {
+            $input = is_array($input) ? (object) $input : $input;
 
-            $row = $this->model()->find($input_id);
-
-            if ($row) {
-                $row->delete();
-            }
-
-            return ! $row ? true : false;
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new AdminProfileDelRepository)->row($input);
         }
+
+        return new AdminProfileDelRepository;
     }
 
 }

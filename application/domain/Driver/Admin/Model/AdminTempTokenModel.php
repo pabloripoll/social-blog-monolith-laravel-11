@@ -18,6 +18,11 @@ class AdminTempTokenModel extends Model
         'token'
     ];
 
+    public function assignable(): array
+    {
+        return $this->fillable;
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

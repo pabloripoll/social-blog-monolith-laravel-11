@@ -5,7 +5,9 @@ namespace Domain\Driver\Admin\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Admin\Model\AdminTempTokenModel;
 use Domain\Driver\Admin\Object\AdminTempTokenObject;
-use Domain\Driver\Admin\Repository\AdminTempTokenRepository;
+use Domain\Driver\Admin\Repository\AdminTempTokenGetRepository;
+use Domain\Driver\Admin\Repository\AdminTempTokenSetRepository;
+use Domain\Driver\Admin\Repository\AdminTempTokenDelRepository;
 
 class AdminTempTokenEntity implements DomainEntityInterface
 {
@@ -21,44 +23,29 @@ class AdminTempTokenEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new AdminTempTokenRepository;
+        return new AdminTempTokenGetRepository;
     }
 
-    public function set(object | array $input): mixed
+    public function set(object | array $input = null): mixed
     {
-        try {
-            $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
+        if ($input) {
+            $input = is_object($input) ? $input : (object) $input;
 
-            ! isset($input->user_id) ? : $row->user_id = $input->user_id;
-            ! isset($input->was_used) ? : $row->was_used = $input->was_used;
-            ! isset($input->expires_at) ? : $row->expires_at = $input->expires_at;
-            ! isset($input->token) ? : $row->token = $input->token;
-
-            return $row->save();
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new AdminTempTokenSetRepository)->row($input);
         }
+
+        return new AdminTempTokenSetRepository;
     }
 
-    public function delete(object | int $input): mixed
+    public function delete(object | array | int $input = null): mixed
     {
-        try {
-            $input_id = ! is_object($input) ? $input : $input->id;
+        if ($input) {
+            $input = is_array($input) ? (object) $input : $input;
 
-            $row = $this->model()->find($input_id);
-
-            if ($row) {
-                $row->delete();
-            }
-
-            return ! $row ? true : false;
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new AdminTempTokenDelRepository)->row($input);
         }
+
+        return new AdminTempTokenDelRepository;
     }
 
 }

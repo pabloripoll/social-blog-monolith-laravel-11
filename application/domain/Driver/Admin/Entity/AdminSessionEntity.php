@@ -5,7 +5,9 @@ namespace Domain\Driver\Admin\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Admin\Model\AdminSessionModel;
 use Domain\Driver\Admin\Object\AdminSessionObject;
-use Domain\Driver\Admin\Repository\AdminSessionRepository;
+use Domain\Driver\Admin\Repository\AdminSessionGetRepository;
+use Domain\Driver\Admin\Repository\AdminSessionSetRepository;
+use Domain\Driver\Admin\Repository\AdminSessionDelRepository;
 
 class AdminSessionEntity implements DomainEntityInterface
 {
@@ -21,46 +23,29 @@ class AdminSessionEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new AdminSessionRepository;
+        return new AdminSessionGetRepository;
     }
 
-    public function set(object | array $input): mixed
+    public function set(object | array $input = null): mixed
     {
-        try {
-            $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
+        if ($input) {
+            $input = is_object($input) ? $input : (object) $input;
 
-            ! isset($input->user_id) ? : $row->user_id = $input->user_id;
-            ! isset($input->in_standby) ? : $row->in_standby = $input->in_standby;
-            ! isset($input->is_opened) ? : $row->is_opened = $input->is_opened;
-            ! isset($input->is_expired) ? : $row->is_expired = $input->is_expired;
-            ! isset($input->expires_at) ? : $row->expires_at = $input->expires_at;
-            ! isset($input->token) ? : $row->token = $input->token;
-
-            return $row->save();
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new AdminSessionSetRepository)->row($input);
         }
+
+        return new AdminSessionSetRepository;
     }
 
-    public function delete(object | int $input): mixed
+    public function delete(object | array | int $input = null): mixed
     {
-        try {
-            $input_id = ! is_object($input) ? $input : $input->id;
+        if ($input) {
+            $input = is_array($input) ? (object) $input : $input;
 
-            $row = $this->model()->find($input_id);
-
-            if ($row) {
-                $row->delete();
-            }
-
-            return ! $row ? true : false;
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new AdminSessionDelRepository)->row($input);
         }
+
+        return new AdminSessionDelRepository;
     }
 
 }

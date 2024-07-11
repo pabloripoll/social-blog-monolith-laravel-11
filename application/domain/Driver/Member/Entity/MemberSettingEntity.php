@@ -5,7 +5,9 @@ namespace Domain\Driver\Member\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Member\Model\MemberSettingModel;
 use Domain\Driver\Member\Object\MemberSettingObject;
-use Domain\Driver\Member\Repository\MemberSettingRepository;
+use Domain\Driver\Member\Repository\MemberSettingGetRepository;
+use Domain\Driver\Member\Repository\MemberSettingSetRepository;
+use Domain\Driver\Member\Repository\MemberSettingDelRepository;
 
 class MemberSettingEntity implements DomainEntityInterface
 {
@@ -21,51 +23,29 @@ class MemberSettingEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new MemberSettingRepository;
+        return new MemberSettingGetRepository;
     }
 
-    public function set(object | array $input): mixed
+    public function set(object | array $input = null): mixed
     {
-        $input = is_object($input) ? $input : (object) $input;
+        if ($input) {
+            $input = is_object($input) ? $input : (object) $input;
 
-        $check = $this->object()->isValid($input);
-        if ($check->has_errors) {
-            return $check;
+            return (new MemberSettingSetRepository)->row($input);
         }
 
-        try {
-            $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
-
-            ! isset($input->user_id) ? : $row->user_id = $input->user_id;
-            ! isset($input->params) ? : $row->params = $input->params;
-
-            $row->save();
-
-            return $row;
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
-        }
+        return new MemberSettingSetRepository;
     }
 
-    public function delete(object | int $input): mixed
+    public function delete(object | array | int $input = null): mixed
     {
-        try {
-            $input_id = ! is_object($input) ? $input : $input->id;
+        if ($input) {
+            $input = is_array($input) ? (object) $input : $input;
 
-            $row = $this->model()->find($input_id);
-
-            if ($row) {
-                $row->delete();
-            }
-
-            return ! $row ? true : false;
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new MemberSettingDelRepository)->row($input);
         }
+
+        return new MemberSettingDelRepository;
     }
 
 }

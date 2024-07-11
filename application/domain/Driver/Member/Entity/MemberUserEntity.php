@@ -2,12 +2,12 @@
 
 namespace Domain\Driver\Member\Entity;
 
-use Illuminate\Support\Facades\Hash;
 use Domain\Driver\Member\Model\MemberUserModel;
 use Domain\Driver\Member\Object\MemberUserObject;
 use Domain\Contract\Entity\DomainEntityInterface;
-use Domain\Driver\Member\Repository\MemberUserRepository;
-use App\Support\Debug;
+use Domain\Driver\Member\Repository\MemberUserGetRepository;
+use Domain\Driver\Member\Repository\MemberUserSetRepository;
+use Domain\Driver\Member\Repository\MemberUserDelRepository;
 
 class MemberUserEntity implements DomainEntityInterface
 {
@@ -23,37 +23,29 @@ class MemberUserEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new MemberUserRepository;
+        return new MemberUserGetRepository;
     }
 
-    public function set(object | array $input): mixed
+    public function set(object | array $input = null): mixed
     {
-        $input = is_object($input) ? $input : (object) $input;
+        if ($input) {
+            $input = is_object($input) ? $input : (object) $input;
 
-        $check = $this->object()->isValid($input);
-        if ($check->has_errors) {
-            return $check;
+            return (new MemberUserSetRepository)->row($input);
         }
 
-        try {
-            $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
+        return new MemberUserSetRepository;
+    }
 
-            ! isset($input->pid) ? : $row->pid = $input->pid;
-            ! isset($input->is_active) ? : $row->is_active = $input->is_active;
-            ! isset($input->is_banned) ? : $row->is_banned = $input->is_banned;
-            ! isset($input->username) ? : $row->username = $input->username;
-            ! isset($input->alias) ? : $row->alias = $input->alias;
-            ! isset($input->password) ? : $row->password = Hash::make($input->password);
-            ! isset($input->created_by_user_id) ? : $row->created_by_user_id = $input->created_by_user_id;
+    public function delete(object | array | int $input = null): mixed
+    {
+        if ($input) {
+            $input = is_array($input) ? (object) $input : $input;
 
-            $row->save();
-
-            return $row;
-
-        } catch(\Exception $e) {
-
-            return (object) ['error' => json_encode($e->getMessage())];
+            return (new MemberUserDelRepository)->row($input);
         }
+
+        return new MemberUserDelRepository;
     }
 
 }

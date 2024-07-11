@@ -5,7 +5,9 @@ namespace Domain\Driver\Member\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Member\Model\MemberSessionModel;
 use Domain\Driver\Member\Object\MemberSessionObject;
-use Domain\Driver\Member\Repository\MemberSessionRepository;
+use Domain\Driver\Member\Repository\MemberSessionGetRepository;
+use Domain\Driver\Member\Repository\MemberSessionSetRepository;
+use Domain\Driver\Member\Repository\MemberSessionDelRepository;
 
 class MemberSessionEntity implements DomainEntityInterface
 {
@@ -21,55 +23,29 @@ class MemberSessionEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new MemberSessionRepository;
+        return new MemberSessionGetRepository;
     }
 
-    public function set(object | array $input): mixed
+    public function set(object | array $input = null): mixed
     {
-        $input = is_object($input) ? $input : (object) $input;
+        if ($input) {
+            $input = is_object($input) ? $input : (object) $input;
 
-        $check = $this->object()->isValid($input);
-        if ($check->has_errors) {
-            return $check;
+            return (new MemberSessionSetRepository)->row($input);
         }
 
-        try {
-            $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
-
-            ! isset($input->user_id) ? : $row->user_id = $input->user_id;
-            ! isset($input->in_standby) ? : $row->in_standby = $input->in_standby;
-            ! isset($input->is_opened) ? : $row->is_opened = $input->is_opened;
-            ! isset($input->is_expired) ? : $row->is_expired = $input->is_expired;
-            ! isset($input->expires_at) ? : $row->expires_at = $input->expires_at;
-            ! isset($input->token) ? : $row->token = $input->token;
-
-            $row->save();
-
-            return $row;
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
-        }
+        return new MemberSessionSetRepository;
     }
 
-    public function delete(object | int $input): mixed
+    public function delete(object | array | int $input = null): mixed
     {
-        try {
-            $input_id = ! is_object($input) ? $input : $input->id;
+        if ($input) {
+            $input = is_array($input) ? (object) $input : $input;
 
-            $row = $this->model()->find($input_id);
-
-            if ($row) {
-                $row->delete();
-            }
-
-            return ! $row ? true : false;
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new MemberSessionDelRepository)->row($input);
         }
+
+        return new MemberSessionDelRepository;
     }
 
 }

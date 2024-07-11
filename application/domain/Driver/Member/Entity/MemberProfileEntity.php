@@ -5,7 +5,9 @@ namespace Domain\Driver\Member\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Member\Model\MemberProfileModel;
 use Domain\Driver\Member\Object\MemberProfileObject;
-use Domain\Driver\Member\Repository\MemberProfileRepository;
+use Domain\Driver\Member\Repository\MemberProfileGetRepository;
+use Domain\Driver\Member\Repository\MemberProfileSetRepository;
+use Domain\Driver\Member\Repository\MemberProfileDelRepository;
 
 class MemberProfileEntity implements DomainEntityInterface
 {
@@ -21,55 +23,29 @@ class MemberProfileEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new MemberProfileRepository;
+        return new MemberProfileGetRepository;
     }
 
-    public function set(object | array $input): mixed
+    public function set(object | array $input = null): mixed
     {
-        $input = is_object($input) ? $input : (object) $input;
+        if ($input) {
+            $input = is_object($input) ? $input : (object) $input;
 
-        $check = $this->object()->isValid($input);
-        if ($check->has_errors) {
-            return $check;
+            return (new MemberProfileSetRepository)->row($input);
         }
 
-        try {
-            $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
-
-            ! isset($input->user_id) ? : $row->user_id = $input->user_id;
-            ! isset($input->email) ? : $row->email = $input->email;
-            ! isset($input->name) ? : $row->name = $input->name;
-            ! isset($input->surname) ? : $row->surname = $input->surname;
-            ! isset($input->phone) ? : $row->phone = $input->phone;
-            ! isset($input->address) ? : $row->address = $input->address;
-
-            $row->save();
-
-            return $row;
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
-        }
+        return new MemberProfileSetRepository;
     }
 
-    public function delete(object | int $input): mixed
+    public function delete(object | array | int $input = null): mixed
     {
-        try {
-            $input_id = ! is_object($input) ? $input : $input->id;
+        if ($input) {
+            $input = is_array($input) ? (object) $input : $input;
 
-            $row = $this->model()->find($input_id);
-
-            if ($row) {
-                $row->delete();
-            }
-
-            return ! $row ? true : false;
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new MemberProfileDelRepository)->row($input);
         }
+
+        return new MemberProfileDelRepository;
     }
 
 }

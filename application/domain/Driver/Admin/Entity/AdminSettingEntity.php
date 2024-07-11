@@ -5,7 +5,9 @@ namespace Domain\Driver\Admin\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Admin\Model\AdminSettingModel;
 use Domain\Driver\Admin\Object\AdminSettingObject;
-use Domain\Driver\Admin\Repository\AdminSettingRepository;
+use Domain\Driver\Admin\Repository\AdminSettingGetRepository;
+use Domain\Driver\Admin\Repository\AdminSettingSetRepository;
+use Domain\Driver\Admin\Repository\AdminSettingDelRepository;
 
 class AdminSettingEntity implements DomainEntityInterface
 {
@@ -21,42 +23,29 @@ class AdminSettingEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new AdminSettingRepository;
+        return new AdminSettingGetRepository;
     }
 
-    public function set(object | array $input): mixed
+    public function set(object | array $input = null): mixed
     {
-        try {
-            $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
+        if ($input) {
+            $input = is_object($input) ? $input : (object) $input;
 
-            ! isset($input->user_id) ? : $row->user_id = $input->user_id;
-            ! isset($input->params) ? : $row->params = $input->params;
-
-            return $row->save();
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new AdminSettingSetRepository)->row($input);
         }
+
+        return new AdminSettingSetRepository;
     }
 
-    public function delete(object | int $input): mixed
+    public function delete(object | array | int $input = null): mixed
     {
-        try {
-            $input_id = ! is_object($input) ? $input : $input->id;
+        if ($input) {
+            $input = is_array($input) ? (object) $input : $input;
 
-            $row = $this->model()->find($input_id);
-
-            if ($row) {
-                $row->delete();
-            }
-
-            return ! $row ? true : false;
-
-        } catch(\Exception $e) {
-
-            return ['error' => json_encode($e->getMessage())];
+            return (new AdminSettingDelRepository)->row($input);
         }
+
+        return new AdminSettingDelRepository;
     }
 
 }

@@ -22,6 +22,11 @@ class AdminSessionModel extends Model
         'user_agent'
     ];
 
+    public function assignable(): array
+    {
+        return $this->fillable;
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
