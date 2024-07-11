@@ -8,4 +8,5 @@ interface DomainObjectInterface
 
     public function value(object | array $row = null): object;
 
+    public function normalize(string $key, mixed $value): mixed;
 }

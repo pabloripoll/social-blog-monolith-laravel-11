@@ -2,43 +2,37 @@
 
 namespace Domain\Driver\Member\Repository;
 
-use Domain\Driver\Member\Model\MemberUserModel;
-use Domain\Driver\Member\Object\MemberUserObject;
-use Domain\Contract\Repository\DomainGetRepositoryAbstract;
-use Domain\Contract\Repository\DomainGetRepositoryInterface;
+use Domain\Driver\Member\Model\MemberProfileModel;
+use Domain\Driver\Member\Object\MemberProfileObject;
+use Domain\Contract\Repository\DomainRepositoryAbstract;
+use Domain\Contract\Repository\DomainRepositoryInterface;
 
-class MemberUserGetRepository extends DomainGetRepositoryAbstract implements DomainGetRepositoryInterface
+class MemberProfileRepository extends DomainRepositoryAbstract implements DomainRepositoryInterface
 {
     /**
      * Required
      */
     public function model(): object
     {
-        return new MemberUserModel;
+        return new MemberProfileModel;
     }
 
     public function object(): object
     {
-        return new MemberUserObject;
+        return new MemberProfileObject;
     }
 
     /**
-     * Single entity
+     * Entity set by "id" reside in parent - other type of set statements should be placed below
      */
-    public function userName(string $username): object | null
-    {
-        $row = $this->model()->where('username', '=', $username)->first() ?? null;
 
-        return ! $row ? null : $this->dto($row);
-    }
+    /**
+     * Entity delete by "id" reside in parent - other type of delete statements should be placed below
+     */
 
-    public function userAlias(string $alias): object | null
-    {
-        $row = $this->model()->where('alias', '=', $alias)->first() ?? null;
-
-        return ! $row ? null : $this->dto($row);
-    }
-
+    /**
+     * Get single entity
+     */
     public function byId(int $id): object | null
     {
         $row = $this->model()->where('id', '=', $id)->first() ?? null;
@@ -60,7 +54,7 @@ class MemberUserGetRepository extends DomainGetRepositoryAbstract implements Dom
     }
 
     /**
-     * Multiple entities
+     * Get multiple entities
      */
     public function total(): int
     {

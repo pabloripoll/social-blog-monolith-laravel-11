@@ -1,30 +1,52 @@
 <?php
 
-namespace Domain\Driver\Admin\Repository;
+namespace Domain\Driver\Member\Repository;
 
-use Domain\Driver\Admin\Model\AdminTempTokenModel;
-use Domain\Driver\Admin\Object\AdminTempTokenObject;
-use Domain\Contract\Repository\DomainGetRepositoryAbstract;
-use Domain\Contract\Repository\DomainGetRepositoryInterface;
+use Domain\Driver\Member\Model\MemberUserModel;
+use Domain\Driver\Member\Object\MemberUserObject;
+use Domain\Contract\Repository\DomainRepositoryAbstract;
+use Domain\Contract\Repository\DomainRepositoryInterface;
 
-class AdminTempTokenGetRepository extends DomainGetRepositoryAbstract implements DomainGetRepositoryInterface
+class MemberUserRepository extends DomainRepositoryAbstract implements DomainRepositoryInterface
 {
     /**
      * Required
      */
     public function model(): object
     {
-        return new AdminTempTokenModel;
+        return new MemberUserModel;
     }
 
     public function object(): object
     {
-        return new AdminTempTokenObject;
+        return new MemberUserObject;
     }
 
     /**
-     * Single entity
+     * Entity set by "id" reside in parent - other type of set statements should be placed below
      */
+
+    /**
+     * Entity delete by "id" reside in parent - other type of delete statements should be placed below
+     */
+
+    /**
+     * Get single entity
+     */
+    public function userName(string $username): object | null
+    {
+        $row = $this->model()->where('username', '=', $username)->first() ?? null;
+
+        return ! $row ? null : $this->dto($row);
+    }
+
+    public function userAlias(string $alias): object | null
+    {
+        $row = $this->model()->where('alias', '=', $alias)->first() ?? null;
+
+        return ! $row ? null : $this->dto($row);
+    }
+
     public function byId(int $id): object | null
     {
         $row = $this->model()->where('id', '=', $id)->first() ?? null;
@@ -46,7 +68,7 @@ class AdminTempTokenGetRepository extends DomainGetRepositoryAbstract implements
     }
 
     /**
-     * Multiple entities
+     * Get multiple entities
      */
     public function total(): int
     {

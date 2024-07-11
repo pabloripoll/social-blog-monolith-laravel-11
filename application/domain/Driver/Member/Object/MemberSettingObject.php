@@ -32,4 +32,9 @@ class MemberSettingObject extends DomainObjectAbstract implements DomainObjectIn
         return $object;
     }
 
+    public function normalize(string $key, mixed $value): mixed
+    {
+        return $value;
+    }
+
 }

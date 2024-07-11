@@ -5,9 +5,7 @@ namespace Domain\Driver\Admin\Entity;
 use Domain\Driver\Admin\Model\AdminUserModel;
 use Domain\Driver\Admin\Object\AdminUserObject;
 use Domain\Contract\Entity\DomainEntityInterface;
-use Domain\Driver\Admin\Repository\AdminUserGetRepository;
-use Domain\Driver\Admin\Repository\AdminUserSetRepository;
-use Domain\Driver\Admin\Repository\AdminUserDelRepository;
+use Domain\Driver\Admin\Repository\AdminUserRepository;
 
 class AdminUserEntity implements DomainEntityInterface
 {
@@ -23,7 +21,7 @@ class AdminUserEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new AdminUserGetRepository;
+        return new AdminUserRepository;
     }
 
     public function set(object | array $input = null): mixed
@@ -31,10 +29,10 @@ class AdminUserEntity implements DomainEntityInterface
         if ($input) {
             $input = is_object($input) ? $input : (object) $input;
 
-            return (new AdminUserSetRepository)->row($input);
+            return (new AdminUserRepository)->setById($input);
         }
 
-        return new AdminUserSetRepository;
+        return new AdminUserRepository;
     }
 
     public function delete(object | array | int $input = null): mixed
@@ -42,10 +40,10 @@ class AdminUserEntity implements DomainEntityInterface
         if ($input) {
             $input = is_array($input) ? (object) $input : $input;
 
-            return (new AdminUserDelRepository)->row($input);
+            return (new AdminUserRepository)->deleteById($input);
         }
 
-        return new AdminUserDelRepository;
+        return new AdminUserRepository;
     }
 
 }

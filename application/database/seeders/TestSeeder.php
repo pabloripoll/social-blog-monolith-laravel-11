@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Domain\Admin;
+use Domain\Member;
 use App\Support\Debug;
 use Illuminate\Database\Seeder;
 
@@ -13,6 +13,13 @@ class TestSeeder extends Seeder
      */
     public function run(): void
     {
-        Debug::log(Admin::user()->model()->table());
+        $user = Member::user()->get()->byId(1);
+
+        $update = Member::user()->set([
+            'id' => $user->id,
+            'alias' => 'ThyMember'
+        ]);
+
+        Debug::log($update);
     }
 }

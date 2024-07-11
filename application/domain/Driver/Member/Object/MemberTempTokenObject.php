@@ -34,4 +34,9 @@ class MemberTempTokenObject extends DomainObjectAbstract implements DomainObject
         return $object;
     }
 
+    public function normalize(string $key, mixed $value): mixed
+    {
+        return $value;
+    }
+
 }

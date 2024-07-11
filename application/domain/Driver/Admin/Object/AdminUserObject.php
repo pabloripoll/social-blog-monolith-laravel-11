@@ -37,4 +37,12 @@ class AdminUserObject extends DomainObjectAbstract implements DomainObjectInterf
         return $object;
     }
 
+    public function normalize(string $key, mixed $value): mixed
+    {
+        $value = $key != 'alias' ? $value : strtolower(preg_replace('/\s+/', '', $value));
+        $value = $key != 'password' ? $value : Hash::make($value);
+
+        return $value;
+    }
+
 }

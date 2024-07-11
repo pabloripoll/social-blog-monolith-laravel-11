@@ -34,4 +34,9 @@ class AdminTempTokenObject extends DomainObjectAbstract implements DomainObjectI
         return $object;
     }
 
+    public function normalize(string $key, mixed $value): mixed
+    {
+        return $value;
+    }
+
 }

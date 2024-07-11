@@ -39,4 +39,9 @@ class AdminImageObject extends DomainObjectAbstract implements DomainObjectInter
         return $object;
     }
 
+    public function normalize(string $key, mixed $value): mixed
+    {
+        return $value;
+    }
+
 }

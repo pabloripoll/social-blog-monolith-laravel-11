@@ -5,9 +5,7 @@ namespace Domain\Driver\Member\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Member\Model\MemberSessionModel;
 use Domain\Driver\Member\Object\MemberSessionObject;
-use Domain\Driver\Member\Repository\MemberSessionGetRepository;
-use Domain\Driver\Member\Repository\MemberSessionSetRepository;
-use Domain\Driver\Member\Repository\MemberSessionDelRepository;
+use Domain\Driver\Member\Repository\MemberSessionRepository;
 
 class MemberSessionEntity implements DomainEntityInterface
 {
@@ -23,7 +21,7 @@ class MemberSessionEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new MemberSessionGetRepository;
+        return new MemberSessionRepository;
     }
 
     public function set(object | array $input = null): mixed
@@ -31,10 +29,10 @@ class MemberSessionEntity implements DomainEntityInterface
         if ($input) {
             $input = is_object($input) ? $input : (object) $input;
 
-            return (new MemberSessionSetRepository)->row($input);
+            return (new MemberSessionRepository)->setById($input);
         }
 
-        return new MemberSessionSetRepository;
+        return new MemberSessionRepository;
     }
 
     public function delete(object | array | int $input = null): mixed
@@ -42,10 +40,10 @@ class MemberSessionEntity implements DomainEntityInterface
         if ($input) {
             $input = is_array($input) ? (object) $input : $input;
 
-            return (new MemberSessionDelRepository)->row($input);
+            return (new MemberSessionRepository)->deleteById($input);
         }
 
-        return new MemberSessionDelRepository;
+        return new MemberSessionRepository;
     }
 
 }

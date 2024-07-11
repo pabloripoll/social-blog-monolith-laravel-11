@@ -2,28 +2,36 @@
 
 namespace Domain\Driver\Admin\Repository;
 
-use Domain\Driver\Admin\Model\AdminSessionModel;
-use Domain\Driver\Admin\Object\AdminSessionObject;
-use Domain\Contract\Repository\DomainGetRepositoryAbstract;
-use Domain\Contract\Repository\DomainGetRepositoryInterface;
+use Domain\Driver\Admin\Model\AdminSettingModel;
+use Domain\Driver\Admin\Object\AdminSettingObject;
+use Domain\Contract\Repository\DomainRepositoryAbstract;
+use Domain\Contract\Repository\DomainRepositoryInterface;
 
-class AdminSessionGetRepository extends DomainGetRepositoryAbstract implements DomainGetRepositoryInterface
+class AdminSettingRepository extends DomainRepositoryAbstract implements DomainRepositoryInterface
 {
     /**
      * Required
      */
     public function model(): object
     {
-        return new AdminSessionModel;
+        return new AdminSettingModel;
     }
 
     public function object(): object
     {
-        return new AdminSessionObject;
+        return new AdminSettingObject;
     }
 
     /**
-     * Single entity
+     * Entity set by "id" reside in parent - other type of set statements should be placed below
+     */
+
+    /**
+     * Entity delete by "id" reside in parent - other type of delete statements should be placed below
+     */
+
+    /**
+     * Get single entity
      */
     public function byId(int $id): object | null
     {
@@ -46,7 +54,7 @@ class AdminSessionGetRepository extends DomainGetRepositoryAbstract implements D
     }
 
     /**
-     * Multiple entities
+     * Get multiple entities
      */
     public function total(): int
     {

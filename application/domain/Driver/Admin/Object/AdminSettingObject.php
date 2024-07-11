@@ -32,4 +32,9 @@ class AdminSettingObject extends DomainObjectAbstract implements DomainObjectInt
         return $object;
     }
 
+    public function normalize(string $key, mixed $value): mixed
+    {
+        return $value;
+    }
+
 }

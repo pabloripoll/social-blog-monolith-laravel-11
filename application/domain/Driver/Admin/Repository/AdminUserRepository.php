@@ -1,30 +1,52 @@
 <?php
 
-namespace Domain\Driver\Member\Repository;
+namespace Domain\Driver\Admin\Repository;
 
-use Domain\Driver\Member\Model\MemberSessionModel;
-use Domain\Driver\Member\Object\MemberSessionObject;
+use Domain\Driver\Admin\Model\AdminUserModel;
+use Domain\Driver\Admin\Object\AdminUserObject;
 use Domain\Contract\Repository\DomainGetRepositoryAbstract;
 use Domain\Contract\Repository\DomainGetRepositoryInterface;
 
-class MemberSessionGetRepository extends DomainGetRepositoryAbstract implements DomainGetRepositoryInterface
+class AdminUserGetRepository extends DomainGetRepositoryAbstract implements DomainGetRepositoryInterface
 {
     /**
      * Required
      */
     public function model(): object
     {
-        return new MemberSessionModel;
+        return new AdminUserModel;
     }
 
     public function object(): object
     {
-        return new MemberSessionObject;
+        return new AdminUserObject;
     }
 
     /**
-     * Single entity
+     * Entity set by "id" reside in parent - other type of set statements should be placed below
      */
+
+    /**
+     * Entity delete by "id" reside in parent - other type of delete statements should be placed below
+     */
+
+    /**
+     * Get single entity
+     */
+    public function userName(string $username): object | null
+    {
+        $row = $this->model()->where('username', '=', $username)->first() ?? null;
+
+        return ! $row ? null : $this->dto($row);
+    }
+
+    public function userAlias(string $alias): object | null
+    {
+        $row = $this->model()->where('alias', '=', $alias)->first() ?? null;
+
+        return ! $row ? null : $this->dto($row);
+    }
+
     public function byId(int $id): object | null
     {
         $row = $this->model()->where('id', '=', $id)->first() ?? null;
@@ -46,7 +68,7 @@ class MemberSessionGetRepository extends DomainGetRepositoryAbstract implements 
     }
 
     /**
-     * Multiple entities
+     * Get multiple entities
      */
     public function total(): int
     {

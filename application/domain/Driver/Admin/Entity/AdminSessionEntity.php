@@ -5,9 +5,7 @@ namespace Domain\Driver\Admin\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Admin\Model\AdminSessionModel;
 use Domain\Driver\Admin\Object\AdminSessionObject;
-use Domain\Driver\Admin\Repository\AdminSessionGetRepository;
-use Domain\Driver\Admin\Repository\AdminSessionSetRepository;
-use Domain\Driver\Admin\Repository\AdminSessionDelRepository;
+use Domain\Driver\Admin\Repository\AdminSessionRepository;
 
 class AdminSessionEntity implements DomainEntityInterface
 {
@@ -23,7 +21,7 @@ class AdminSessionEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new AdminSessionGetRepository;
+        return new AdminSessionRepository;
     }
 
     public function set(object | array $input = null): mixed
@@ -31,10 +29,10 @@ class AdminSessionEntity implements DomainEntityInterface
         if ($input) {
             $input = is_object($input) ? $input : (object) $input;
 
-            return (new AdminSessionSetRepository)->row($input);
+            return (new AdminSessionRepository)->setById($input);
         }
 
-        return new AdminSessionSetRepository;
+        return new AdminSessionRepository;
     }
 
     public function delete(object | array | int $input = null): mixed
@@ -42,10 +40,10 @@ class AdminSessionEntity implements DomainEntityInterface
         if ($input) {
             $input = is_array($input) ? (object) $input : $input;
 
-            return (new AdminSessionDelRepository)->row($input);
+            return (new AdminSessionRepository)->deleteById($input);
         }
 
-        return new AdminSessionDelRepository;
+        return new AdminSessionRepository;
     }
 
 }

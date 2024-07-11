@@ -5,9 +5,7 @@ namespace Domain\Driver\Member\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Member\Model\MemberTempTokenModel;
 use Domain\Driver\Member\Object\MemberTempTokenObject;
-use Domain\Driver\Member\Repository\MemberTempTokenGetRepository;
-use Domain\Driver\Member\Repository\MemberTempTokenSetRepository;
-use Domain\Driver\Member\Repository\MemberTempTokenDelRepository;
+use Domain\Driver\Member\Repository\MemberTempTokenRepository;
 
 class MemberTempTokenEntity implements DomainEntityInterface
 {
@@ -23,7 +21,7 @@ class MemberTempTokenEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new MemberTempTokenGetRepository;
+        return new MemberTempTokenRepository;
     }
 
     public function set(object | array $input = null): mixed
@@ -31,10 +29,10 @@ class MemberTempTokenEntity implements DomainEntityInterface
         if ($input) {
             $input = is_object($input) ? $input : (object) $input;
 
-            return (new MemberTempTokenSetRepository)->row($input);
+            return (new MemberTempTokenRepository)->setById($input);
         }
 
-        return new MemberTempTokenSetRepository;
+        return new MemberTempTokenRepository;
     }
 
     public function delete(object | array | int $input = null): mixed
@@ -42,10 +40,10 @@ class MemberTempTokenEntity implements DomainEntityInterface
         if ($input) {
             $input = is_array($input) ? (object) $input : $input;
 
-            return (new MemberTempTokenDelRepository)->row($input);
+            return (new MemberTempTokenRepository)->deleteById($input);
         }
 
-        return new MemberTempTokenDelRepository;
+        return new MemberTempTokenRepository;
     }
 
 }

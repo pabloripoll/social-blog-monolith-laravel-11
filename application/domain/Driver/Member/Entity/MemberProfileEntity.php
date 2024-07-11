@@ -5,9 +5,7 @@ namespace Domain\Driver\Member\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Member\Model\MemberProfileModel;
 use Domain\Driver\Member\Object\MemberProfileObject;
-use Domain\Driver\Member\Repository\MemberProfileGetRepository;
-use Domain\Driver\Member\Repository\MemberProfileSetRepository;
-use Domain\Driver\Member\Repository\MemberProfileDelRepository;
+use Domain\Driver\Member\Repository\MemberProfileRepository;
 
 class MemberProfileEntity implements DomainEntityInterface
 {
@@ -23,7 +21,7 @@ class MemberProfileEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new MemberProfileGetRepository;
+        return new MemberProfileRepository;
     }
 
     public function set(object | array $input = null): mixed
@@ -31,10 +29,10 @@ class MemberProfileEntity implements DomainEntityInterface
         if ($input) {
             $input = is_object($input) ? $input : (object) $input;
 
-            return (new MemberProfileSetRepository)->row($input);
+            return (new MemberProfileRepository)->setById($input);
         }
 
-        return new MemberProfileSetRepository;
+        return new MemberProfileRepository;
     }
 
     public function delete(object | array | int $input = null): mixed
@@ -42,10 +40,10 @@ class MemberProfileEntity implements DomainEntityInterface
         if ($input) {
             $input = is_array($input) ? (object) $input : $input;
 
-            return (new MemberProfileDelRepository)->row($input);
+            return (new MemberProfileRepository)->deleteById($input);
         }
 
-        return new MemberProfileDelRepository;
+        return new MemberProfileRepository;
     }
 
 }

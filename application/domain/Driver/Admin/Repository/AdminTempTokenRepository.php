@@ -1,29 +1,37 @@
 <?php
 
-namespace Domain\Driver\Member\Repository;
+namespace Domain\Driver\Admin\Repository;
 
-use Domain\Driver\Member\Model\MemberProfileModel;
-use Domain\Driver\Member\Object\MemberProfileObject;
-use Domain\Contract\Repository\DomainGetRepositoryAbstract;
-use Domain\Contract\Repository\DomainGetRepositoryInterface;
+use Domain\Driver\Admin\Model\AdminTempTokenModel;
+use Domain\Driver\Admin\Object\AdminTempTokenObject;
+use Domain\Contract\Repository\DomainRepositoryAbstract;
+use Domain\Contract\Repository\DomainRepositoryInterface;
 
-class MemberProfileGetRepository extends DomainGetRepositoryAbstract implements DomainGetRepositoryInterface
+class AdminTempTokenRepository extends DomainRepositoryAbstract implements DomainRepositoryInterface
 {
     /**
      * Required
      */
     public function model(): object
     {
-        return new MemberProfileModel;
+        return new AdminTempTokenModel;
     }
 
     public function object(): object
     {
-        return new MemberProfileObject;
+        return new AdminTempTokenObject;
     }
 
     /**
-     * Single entity
+     * Entity set by "id" reside in parent - other type of set statements should be placed below
+     */
+
+    /**
+     * Entity delete by "id" reside in parent - other type of delete statements should be placed below
+     */
+
+    /**
+     * Get single entity
      */
     public function byId(int $id): object | null
     {
@@ -46,7 +54,7 @@ class MemberProfileGetRepository extends DomainGetRepositoryAbstract implements 
     }
 
     /**
-     * Multiple entities
+     * Get multiple entities
      */
     public function total(): int
     {

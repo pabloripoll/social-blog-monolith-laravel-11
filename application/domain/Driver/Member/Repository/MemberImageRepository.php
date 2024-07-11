@@ -1,29 +1,37 @@
 <?php
 
-namespace Domain\Driver\Admin\Repository;
+namespace Domain\Driver\Member\Repository;
 
-use Domain\Driver\Admin\Model\AdminImageModel;
-use Domain\Driver\Admin\Object\AdminImageObject;
-use Domain\Contract\Repository\DomainGetRepositoryAbstract;
-use Domain\Contract\Repository\DomainGetRepositoryInterface;
+use Domain\Driver\Member\Model\MemberImageModel;
+use Domain\Driver\Member\Object\MemberImageObject;
+use Domain\Contract\Repository\DomainRepositoryAbstract;
+use Domain\Contract\Repository\DomainRepositoryInterface;
 
-class AdminImageGetRepository extends DomainGetRepositoryAbstract implements DomainGetRepositoryInterface
+class MemberImageRepository extends DomainRepositoryAbstract implements DomainRepositoryInterface
 {
     /**
      * Required
      */
     public function model(): object
     {
-        return new AdminImageModel;
+        return new MemberImageModel;
     }
 
     public function object(): object
     {
-        return new AdminImageObject;
+        return new MemberImageObject;
     }
 
     /**
-     * Single entity
+     * Entity set by "id" reside in parent - other type of set statements should be placed below
+     */
+
+    /**
+     * Entity delete by "id" reside in parent - other type of delete statements should be placed below
+     */
+
+    /**
+     * Get single entity
      */
     public function byId(int $id): object | null
     {
@@ -46,7 +54,7 @@ class AdminImageGetRepository extends DomainGetRepositoryAbstract implements Dom
     }
 
     /**
-     * Multiple entities
+     * Get multiple entities
      */
     public function total(): int
     {

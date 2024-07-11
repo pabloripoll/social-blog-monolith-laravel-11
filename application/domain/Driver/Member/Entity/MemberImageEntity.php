@@ -5,9 +5,7 @@ namespace Domain\Driver\Member\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Member\Model\MemberImageModel;
 use Domain\Driver\Member\Object\MemberImageObject;
-use Domain\Driver\Member\Repository\MemberImageGetRepository;
-use Domain\Driver\Member\Repository\MemberImageSetRepository;
-use Domain\Driver\Member\Repository\MemberImageDelRepository;
+use Domain\Driver\Member\Repository\MemberImageRepository;
 
 class MemberImageEntity implements DomainEntityInterface
 {
@@ -23,7 +21,7 @@ class MemberImageEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new MemberImageGetRepository;
+        return new MemberImageRepository;
     }
 
     public function set(object | array $input = null): mixed
@@ -31,10 +29,10 @@ class MemberImageEntity implements DomainEntityInterface
         if ($input) {
             $input = is_object($input) ? $input : (object) $input;
 
-            return (new MemberImageSetRepository)->row($input);
+            return (new MemberImageRepository)->setById($input);
         }
 
-        return new MemberImageSetRepository;
+        return new MemberImageRepository;
     }
 
     public function delete(object | array | int $input = null): mixed
@@ -42,10 +40,10 @@ class MemberImageEntity implements DomainEntityInterface
         if ($input) {
             $input = is_array($input) ? (object) $input : $input;
 
-            return (new MemberImageDelRepository)->row($input);
+            return (new MemberImageRepository)->deleteById($input);
         }
 
-        return new MemberImageDelRepository;
+        return new MemberImageRepository;
     }
 
 }

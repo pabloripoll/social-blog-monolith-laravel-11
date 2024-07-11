@@ -5,9 +5,7 @@ namespace Domain\Driver\Admin\Entity;
 use Domain\Contract\Entity\DomainEntityInterface;
 use Domain\Driver\Admin\Model\AdminTempTokenModel;
 use Domain\Driver\Admin\Object\AdminTempTokenObject;
-use Domain\Driver\Admin\Repository\AdminTempTokenGetRepository;
-use Domain\Driver\Admin\Repository\AdminTempTokenSetRepository;
-use Domain\Driver\Admin\Repository\AdminTempTokenDelRepository;
+use Domain\Driver\Admin\Repository\AdminTempTokenRepository;
 
 class AdminTempTokenEntity implements DomainEntityInterface
 {
@@ -23,7 +21,7 @@ class AdminTempTokenEntity implements DomainEntityInterface
 
     public function get()
     {
-        return new AdminTempTokenGetRepository;
+        return new AdminTempTokenRepository;
     }
 
     public function set(object | array $input = null): mixed
@@ -31,10 +29,10 @@ class AdminTempTokenEntity implements DomainEntityInterface
         if ($input) {
             $input = is_object($input) ? $input : (object) $input;
 
-            return (new AdminTempTokenSetRepository)->row($input);
+            return (new AdminTempTokenRepository)->setById($input);
         }
 
-        return new AdminTempTokenSetRepository;
+        return new AdminTempTokenRepository;
     }
 
     public function delete(object | array | int $input = null): mixed
@@ -42,10 +40,10 @@ class AdminTempTokenEntity implements DomainEntityInterface
         if ($input) {
             $input = is_array($input) ? (object) $input : $input;
 
-            return (new AdminTempTokenDelRepository)->row($input);
+            return (new AdminTempTokenRepository)->deleteById($input);
         }
 
-        return new AdminTempTokenDelRepository;
+        return new AdminTempTokenRepository;
     }
 
 }

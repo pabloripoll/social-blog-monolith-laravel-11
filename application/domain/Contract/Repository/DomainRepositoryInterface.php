@@ -2,7 +2,7 @@
 
 namespace Domain\Contract\Repository;
 
-interface DomainGetRepositoryInterface
+interface DomainRepositoryInterface
 {
     public function model(): object;
 

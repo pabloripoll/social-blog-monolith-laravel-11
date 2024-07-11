@@ -1,29 +1,37 @@
 <?php
 
-namespace Domain\Driver\Member\Repository;
+namespace Domain\Driver\Admin\Repository;
 
-use Domain\Driver\Member\Model\MemberSettingModel;
-use Domain\Driver\Member\Object\MemberSettingObject;
-use Domain\Contract\Repository\DomainGetRepositoryAbstract;
-use Domain\Contract\Repository\DomainGetRepositoryInterface;
+use Domain\Driver\Admin\Model\AdminProfileModel;
+use Domain\Driver\Admin\Object\AdminProfileObject;
+use Domain\Contract\Repository\DomainRepositoryAbstract;
+use Domain\Contract\Repository\DomainRepositoryInterface;
 
-class MemberSettingGetRepository extends DomainGetRepositoryAbstract implements DomainGetRepositoryInterface
+class AdminProfileRepository extends DomainRepositoryAbstract implements DomainRepositoryInterface
 {
     /**
      * Required
      */
     public function model(): object
     {
-        return new MemberSettingModel;
+        return new AdminProfileModel;
     }
 
     public function object(): object
     {
-        return new MemberSettingObject;
+        return new AdminProfileObject;
     }
 
     /**
-     * Single entity
+     * Entity set by "id" reside in parent - other type of set statements should be placed below
+     */
+
+    /**
+     * Entity delete by "id" reside in parent - other type of delete statements should be placed below
+     */
+
+    /**
+     * Get single entity
      */
     public function byId(int $id): object | null
     {
@@ -46,7 +54,7 @@ class MemberSettingGetRepository extends DomainGetRepositoryAbstract implements 
     }
 
     /**
-     * Multiple entities
+     * Get multiple entities
      */
     public function total(): int
     {
