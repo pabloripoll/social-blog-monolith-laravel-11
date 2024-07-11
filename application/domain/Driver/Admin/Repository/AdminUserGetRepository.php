@@ -3,6 +3,7 @@
 namespace Domain\Driver\Admin\Repository;
 
 use Domain\Driver\Admin\Model\AdminUserModel;
+use Domain\Driver\Admin\Object\AdminUserObject;
 use Domain\Contract\Repository\DomainGetRepositoryAbstract;
 use Domain\Contract\Repository\DomainGetRepositoryInterface;
 
@@ -16,6 +17,11 @@ class AdminUserGetRepository extends DomainGetRepositoryAbstract implements Doma
         return new AdminUserModel;
     }
 
+    public function object(): object
+    {
+        return new AdminUserObject;
+    }
+
     /**
      * Single entity
      */
@@ -23,21 +29,21 @@ class AdminUserGetRepository extends DomainGetRepositoryAbstract implements Doma
     {
         $row = $this->model()->where('username', '=', $username)->first() ?? null;
 
-        return ! $row ? null : $this->object($row);
+        return ! $row ? null : $this->dto($row);
     }
 
     public function userNameAndAlias(string $username, string $alias): object | null
     {
         $row = $this->model()->where('username', '=', $username)->orWhere('alias', '=', $alias)->first() ?? null;
 
-        return ! $row ? null : $this->object($row);
+        return ! $row ? null : $this->dto($row);
     }
 
     public function byId(int $id): object | null
     {
         $row = $this->model()->where('id', '=', $id)->first() ?? null;
 
-        return ! $row ? null : $this->object($row);
+        return ! $row ? null : $this->dto($row);
     }
 
     public function rowByColumns(array $columns): object | null
@@ -50,7 +56,7 @@ class AdminUserGetRepository extends DomainGetRepositoryAbstract implements Doma
 
         $row = $row->first() ?? null;
 
-        return ! $row ? null : $this->object($row);
+        return ! $row ? null : $this->dto($row);
     }
 
     /**
@@ -77,7 +83,7 @@ class AdminUserGetRepository extends DomainGetRepositoryAbstract implements Doma
         $result = $result->orderBy($order[0], $order[1]);
         $result = $result->get();
 
-        return count($result) < 1 ? null : $this->object($result);
+        return count($result) < 1 ? null : $this->dto($result);
     }
 
 }

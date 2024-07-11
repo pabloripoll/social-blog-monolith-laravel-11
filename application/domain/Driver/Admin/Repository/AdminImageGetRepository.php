@@ -3,6 +3,7 @@
 namespace Domain\Driver\Admin\Repository;
 
 use Domain\Driver\Admin\Model\AdminImageModel;
+use Domain\Driver\Admin\Object\AdminImageObject;
 use Domain\Contract\Repository\DomainGetRepositoryAbstract;
 use Domain\Contract\Repository\DomainGetRepositoryInterface;
 
@@ -16,6 +17,11 @@ class AdminImageGetRepository extends DomainGetRepositoryAbstract implements Dom
         return new AdminImageModel;
     }
 
+    public function object(): object
+    {
+        return new AdminImageObject;
+    }
+
     /**
      * Single entity
      */
@@ -23,7 +29,7 @@ class AdminImageGetRepository extends DomainGetRepositoryAbstract implements Dom
     {
         $row = $this->model()->where('id', '=', $id)->first() ?? null;
 
-        return ! $row ? null : $this->object($row);
+        return ! $row ? null : $this->dto($row);
     }
 
     public function rowByColumns(array $columns): object | null
@@ -36,7 +42,7 @@ class AdminImageGetRepository extends DomainGetRepositoryAbstract implements Dom
 
         $row = $row->first() ?? null;
 
-        return ! $row ? null : $this->object($row);
+        return ! $row ? null : $this->dto($row);
     }
 
     /**
@@ -63,7 +69,7 @@ class AdminImageGetRepository extends DomainGetRepositoryAbstract implements Dom
         $result = $result->orderBy($order[0], $order[1]);
         $result = $result->get();
 
-        return count($result) < 1 ? null : $this->object($result);
+        return count($result) < 1 ? null : $this->dto($result);
     }
 
 }

@@ -59,7 +59,7 @@ class ValidatorController
 
     public function password(string $value, $limit = null): mixed
     {
-        if (! $this->limit($value, $limit) || ! preg_match("/^[A-Za-z0-9*$|@¿?¡!~·#%&()._\-\/ ]{8,32}$/", $value)) {
+        if (! $this->limit($value, $limit)) { // || ! preg_match("/^[A-Za-z0-9*$|@¿?¡!~·#%&()._\-\/ ]{8,32}$/", $value)
             return null;
         }
 

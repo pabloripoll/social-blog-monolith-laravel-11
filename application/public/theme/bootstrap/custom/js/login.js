@@ -86,7 +86,7 @@ const submitForm = async () => {
     }
 
     jsonPost(bundle).then((response) => {
-        console.log(response)
+
         if (response.hasOwnProperty('error')) {
 
             formEnabled()
@@ -109,7 +109,6 @@ const submitForm = async () => {
                 icon: "fas fa-wifi"
             })
         }
-
 
         //location.href = '/posts'
 

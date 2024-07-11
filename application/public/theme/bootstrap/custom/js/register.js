@@ -10,7 +10,7 @@ const loginStatus = document.querySelector(`[id=login-status]`)
 const submitButton = document.querySelector(`[id=submit-button]`)
 const form = document.getElementsByTagName(`form`)
 
-function resetLoginStatus() {
+function resetRegisterStatus() {
     loginStatus.innerHTML = `
         <div class="alert alert-light fade show" role="alert">&nbsp;</div>
     `
@@ -66,7 +66,6 @@ function loginProcess(params = {}) {
     }
 
     loginStatus.innerHTML = `
-        <div class="alert alert-light fade show" role="alert">&nbsp;</div>
         <div class="alert alert-${status} alert-dismissible">
             <span><i class="icon ${icon}"></i> ${message}</span>
         </div>
@@ -93,9 +92,33 @@ const submitForm = async () => {
     }
 
     jsonPost(bundle).then((response) => {
-
         console.log(response)
+
+        if (response.hasOwnProperty('error')) {
+
+            formEnabled()
+
+            if (response.has_errors == true) {
+                loginProcess({
+                    status: "danger",
+                    field: response.error,
+                    message: response.message,
+                    icon: "fas fa-wifi"
+                })
+
+                return
+            }
+
+
+            loginProcess({
+                status: "warning",
+                message: response.message,
+                icon: "fas fa-wifi"
+            })
+        }
+
         //location.href = '/posts'
+        formEnabled()
 
     }).catch((error) => {
         formEnabled()
@@ -104,11 +127,11 @@ const submitForm = async () => {
 }
 
 username.addEventListener('focus', () => {
-    resetLoginStatus()
+    resetRegisterStatus()
 })
 
 password.addEventListener('focus', function() {
-    resetLoginStatus()
+    resetRegisterStatus()
 })
 
 password.addEventListener('keyup', event => {
@@ -128,7 +151,7 @@ submitButton.addEventListener('click', () => {
 
 alias.focus()
 
-resetLoginStatus()
+resetRegisterStatus()
 
 for (let i = 0; i < form.length; i++) {
     form[i].addEventListener('submit', event => {
