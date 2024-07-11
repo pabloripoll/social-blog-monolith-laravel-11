@@ -30,7 +30,7 @@ abstract class DomainObjectAbstract
             return $output;
         }
 
-        $output->valid = $input;
+        $output->valid = (object) $input;
         $output->has_errors = false;
 
         return $output;

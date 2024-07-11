@@ -24,8 +24,15 @@ class MemberImageEntity implements DomainEntityInterface
         return new MemberImageRepository;
     }
 
-    public function save(object | array $input): mixed
+    public function set(object | array $input): mixed
     {
+        $input = is_object($input) ? $input : (object) $input;
+
+        $check = $this->object()->isValid($input);
+        if ($check->has_errors) {
+            return $check;
+        }
+
         try {
             $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
 
@@ -39,7 +46,9 @@ class MemberImageEntity implements DomainEntityInterface
             ! isset($input->file_extension) ? : $row->file_extension = $input->file_extension;
             ! isset($input->position) ? : $row->position = $input->position;
 
-            return $row->save();
+            $row->save();
+
+            return $row;
 
         } catch(\Exception $e) {
 

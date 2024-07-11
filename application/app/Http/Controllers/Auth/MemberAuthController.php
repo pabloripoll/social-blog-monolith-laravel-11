@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use Domain\Member;
 use App\Support\Debug;
-use Illuminate\Http\Request;
+use App\Support\Random;
+use Illuminate\Support\Facades\DB;
 
 class MemberAuthController
 {
+    /**
+     * Session
+     */
     public function createSession(object $user): array | object
     {
         $response = new \stdClass;
@@ -43,57 +47,104 @@ class MemberAuthController
         return $response;
     }
 
+    /**
+     * Access
+     */
     public function login(object $request): array | object
     {
         $input = Member::user()->object()->isValid([
-            'alias' => $request->alias ?? null,
             'username' => $request->username ?? null,
             'password' => $request->password ?? null
         ]);
 
         if ($input->has_errors) {
-
+            return (object) [
+                'error' => $input->error,
+                'message' => 'values are not valid',
+                'errors' => $input->errors,
+                'has_errors' => $input->has_errors
+            ];
         }
 
-        $user = Member::user()->get()->forAuth([
-            'username' => $input->username,
-            'password' => $input->password
+        $user = Member::user()->get()->rowByColumns([
+            'username' => $input->valid->username,
+            'password' => $input->valid->password
         ]);
 
-        $session = $this->createSession($user);
+        if (! $user) {
+            return (object) [
+                'error' => 'not-found',
+                'message' => 'member is not registered'
+            ];
+        }
 
-        return [];
+        return $request;
     }
 
+    /**
+     * Register
+     */
     public function register(object $request): array | object
     {
         $input = Member::user()->object()->isValid([
-            'alias' => $request->alias ?? null,
-            'username' => $request->username ?? null,
-            'password' => $request->password ?? null
+            'alias' => $request->alias,
+            'username' => $request->username,
+            'password' => $request->password
         ]);
 
-        $response = new \stdClass;
-
-        if ($input->errors) {
-
+        if ($input->has_errors) {
+            return $input;
         }
 
-        $user = Member::user()->set([
-            'alias' => $input->alias,
-            'username' => $input->username,
-            'password' => $input->password
-        ]);
+        $register = Member::user()->get()->userNameAndAlias($request->alias, $request->username);
+        if ($register) {
+            return (object) ['error' => 'register already exists'];
+        }
 
-        $profile = Member::profile()->set([
-            'user_id' => $user->id,
-            'username' => $input->username,
-            'password' => $input->password
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $session = $this->createSession($user);
+            $user = Member::user()->set([
+                'pid' => (new Random)->integer(11),
+                'is_active' => 1,
+                'alias' => $input->valid->alias,
+                'username' => $input->valid->username,
+                'password' => $input->valid->password,
+                'created_by_user_id' => 1
+            ]);
 
-        return $response;
+            if (isset($user->error)) {
+                return $user;
+            }
+
+            $profile = (object) Member::profile()->set([
+                'user_id' => $user->id,
+                'email' => $user->username,
+                'name' => $user->alias
+            ]);
+
+            if (isset($profile->error)) {
+                return $profile;
+            }
+
+            $setting = (object) Member::setting()->set([
+                'user_id' => $user->id,
+                'params' => json_encode([])
+            ]);
+
+            if (isset($setting->error)) {
+                return $setting;
+            }
+
+            DB::commit();
+
+            return $request;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Debug::log($e->getMessage());
+        }
     }
 
     public function createToken()

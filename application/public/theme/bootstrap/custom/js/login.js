@@ -61,7 +61,6 @@ function loginProcess(params = {}) {
     }
 
     loginStatus.innerHTML = `
-        <div class="alert alert-light fade show" role="alert">&nbsp;</div>
         <div class="alert alert-${status} alert-dismissible">
             <span><i class="icon ${icon}"></i> ${message}</span>
         </div>
@@ -78,7 +77,7 @@ const submitForm = async () => {
     }
 
     const bundle = {
-        url: '/api/v1/auth/register',
+        url: '/api/v1/auth/login',
         auth: CSRF_TOKEN.getAttribute('content'),
         data: {
             username: username.value,
@@ -87,8 +86,31 @@ const submitForm = async () => {
     }
 
     jsonPost(bundle).then((response) => {
-
         console.log(response)
+        if (response.hasOwnProperty('error')) {
+
+            formEnabled()
+
+            if (response.has_errors == true) {
+                loginProcess({
+                    status: "danger",
+                    field: response.error,
+                    message: response.message,
+                    icon: "fas fa-wifi"
+                })
+
+                return
+            }
+
+
+            loginProcess({
+                status: "warning",
+                message: response.message,
+                icon: "fas fa-wifi"
+            })
+        }
+
+
         //location.href = '/posts'
 
     }).catch((error) => {

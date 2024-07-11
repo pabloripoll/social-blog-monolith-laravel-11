@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Domain;
 
 use Tests\TestCase;
 
 /**
- * $ php artisan test --filter WebHomePageTest
+ * $ php artisan test --filter MemberDomainTest
  */
-class WebHomePageTest extends TestCase
+class MemberDomainTest extends TestCase
 {
     public function test_home_page_returns_succesful_response(): void
     {

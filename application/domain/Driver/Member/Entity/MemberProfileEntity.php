@@ -24,8 +24,15 @@ class MemberProfileEntity implements DomainEntityInterface
         return new MemberProfileRepository;
     }
 
-    public function save(object | array $input): mixed
+    public function set(object | array $input): mixed
     {
+        $input = is_object($input) ? $input : (object) $input;
+
+        $check = $this->object()->isValid($input);
+        if ($check->has_errors) {
+            return $check;
+        }
+
         try {
             $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
 
@@ -36,7 +43,9 @@ class MemberProfileEntity implements DomainEntityInterface
             ! isset($input->phone) ? : $row->phone = $input->phone;
             ! isset($input->address) ? : $row->address = $input->address;
 
-            return $row->save();
+            $row->save();
+
+            return $row;
 
         } catch(\Exception $e) {
 

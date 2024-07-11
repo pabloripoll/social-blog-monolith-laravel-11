@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Router\Api;
+namespace App\Http\Router\Api\Auth;
 
-use Domain\Member;
 use App\Support\Debug;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\MemberAuthController;
@@ -18,13 +17,13 @@ class ApiAuthMemberRouter
         return response()->json($response);
     }
 
-    public function register(Request $request)
+    /* public function register(Request $request)
     {
         $request = json_decode($request->getContent());
 
         $response = (new MemberAuthController)->register($request);
 
         return response()->json($response);
-    }
+    } */
 
 }

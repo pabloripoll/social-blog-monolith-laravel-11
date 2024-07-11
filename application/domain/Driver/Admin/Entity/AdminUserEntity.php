@@ -24,7 +24,7 @@ class AdminUserEntity implements DomainEntityInterface
         return new AdminUserRepository;
     }
 
-    public function save(object | array $input): mixed
+    public function set(object | array $input): mixed
     {
         /* $check = $this->object()->isValid($input);
         if ($check->has_errors) {

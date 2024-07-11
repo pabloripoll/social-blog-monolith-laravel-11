@@ -2,7 +2,7 @@
 
 namespace Domain\Contract\Validation;
 
-use App\Validator\ValidatorController;
+use App\Http\Controllers\Validator\ValidatorController;
 
 abstract class DomainValidationAbstract
 {

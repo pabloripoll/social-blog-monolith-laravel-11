@@ -24,7 +24,7 @@ class AdminSettingEntity implements DomainEntityInterface
         return new AdminSettingRepository;
     }
 
-    public function save(object | array $input): mixed
+    public function set(object | array $input): mixed
     {
         try {
             $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);

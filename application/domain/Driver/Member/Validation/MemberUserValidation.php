@@ -43,7 +43,7 @@ class MemberUserValidation extends DomainValidationAbstract
 
     public function password($value)
     {
-        return $this->val()->naming($value, [8, 128]) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+        return $this->val()->password($value, [8, 128]) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
     }
 
     public function created_by_user_id($value)

@@ -9,7 +9,7 @@ use Domain\Contract\Validation\DomainValidationAbstract;
  *
  * Methods valid output value must be clean as input value
  */
-class MemberSessionValidation extends DomainValidationAbstract
+class MemberSettingValidation extends DomainValidationAbstract
 {
     public function id($value)
     {
