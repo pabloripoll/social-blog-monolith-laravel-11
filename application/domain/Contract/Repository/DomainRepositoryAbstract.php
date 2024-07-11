@@ -38,7 +38,7 @@ abstract class DomainRepositoryAbstract
             $row = ! isset($input->id) ? $this->model() : $this->model()->find($input->id);
 
             foreach ($this->model()->assignable() as $col) {
-                ! isset($input->{$col}) ? : $row->{$col} = trim($this->object()->nomalize($col, $input->{$col}));
+                ! isset($input->{$col}) ? : $row->{$col} = trim($this->object()->normalize($col, $input->{$col}));
             }
 
             $row->save();
