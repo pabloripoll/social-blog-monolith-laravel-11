@@ -96,7 +96,7 @@ class MemberAuthController
             return $input;
         }
 
-        $alias_exists = Member::user()->get()->userAlias($request->alias);
+        $alias_exists = Member::user()->get()->alias($request->alias);
         if ($alias_exists) {
             return (object) ['error' => 'alias', 'message' => 'name already exists'];
         }

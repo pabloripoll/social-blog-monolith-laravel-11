@@ -40,7 +40,7 @@ class MemberUserRepository extends DomainRepositoryAbstract implements DomainRep
         return ! $row ? null : $this->dto($row);
     }
 
-    public function userAlias(string $alias): object | null
+    public function alias(string $alias): object | null
     {
         $row = $this->model()->where('alias', '=', $alias)->first() ?? null;
 
