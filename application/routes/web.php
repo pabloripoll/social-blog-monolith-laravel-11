@@ -27,19 +27,18 @@ Route::get('/home{extension}', [WebPublicRouter::class, 'postsContent'])->where(
 Route::get('/posts{extension}', [WebPublicRouter::class, 'postsContent'])->where('extension', '(?:.html)?');
 Route::get('/home/{category?}/{page?}', [WebPublicRouter::class, 'postsContent']);
 Route::get('/posts/{category?}/{page?}', [WebPublicRouter::class, 'postsContent']);
-Route::post('/home', [WebPublicRouter::class, 'asyncPostsContent']);
-Route::post('/posts', [WebPublicRouter::class, 'asyncPostsContent']);
 
 Route::get('/post/{pid}/{slug}{extension}', [WebPublicRouter::class, 'postContent'])->where('extension', '(?:.html)?');
-Route::post('/post', [WebPublicRouter::class, 'asyncPostContent']);
 
 Route::get('/wall{extension}', [WebPublicRouter::class, 'wallContent'])->where('extension', '(?:.html)?');
-Route::post('/wall', [WebPublicRouter::class, 'asyncWallContent']);
 
 Route::get('/profiles/{pid?}', [WebPublicRouter::class, 'profileContent']);
-Route::post('/profiles', [WebPublicRouter::class, 'asyncProfileContent']);
 Route::get('/profiles/{pid}/posts', [WebPublicRouter::class, 'profilePostsContent']);
-Route::post('/profiles/posts', [WebPublicRouter::class, 'asyncProfilePostsContent']);
+
+Route::get('/member/exit/{token}', [WebMemberRouter::class, 'exit']);
+Route::get('/member/login/{token}', [WebMemberRouter::class, 'access']);
+Route::get('/member/profile', [WebMemberRouter::class, 'profile']);
+Route::get('/member/settings', [WebMemberRouter::class, 'settings']);
 
 /*
 |-----------------------------------------------------------------------  /

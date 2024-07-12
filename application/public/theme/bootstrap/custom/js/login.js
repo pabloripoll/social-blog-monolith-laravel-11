@@ -114,7 +114,7 @@ const submitForm = async () => {
 
         if (response.hasOwnProperty('success')) {
 
-            registerProcess({
+            loginProcess({
                 status: "success"
             })
 
@@ -124,7 +124,7 @@ const submitForm = async () => {
                 document.querySelector('#sign-in-count').innerHTML = time
                 if (time == 0) {
                     clearInterval(counter)
-                    location.href = ''
+                    location.href = `/member/access/${response.session.token}`
                 }
             }, 1000);
 
@@ -135,6 +135,7 @@ const submitForm = async () => {
         return
 
     }).catch((error) => {
+        console.log(error)
         formEnabled()
         loginProcess({status:'danger', message:'connection error', icon:'fas fa-wifi'})
     })

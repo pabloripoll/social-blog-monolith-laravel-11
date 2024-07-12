@@ -49,7 +49,7 @@ class MemberAuthController
             'is_opened' => 0,
             'is_expired' => 0,
             'expires_at' => \date("Y/m/d H:i:s", strtotime("+30 minutes")),
-            'token' => (new Random)->token(16),
+            'token' => (new Random)->token(),
             'user_agent' => $client->browser,
         ]);
     }
@@ -96,7 +96,10 @@ class MemberAuthController
 
         return (object) [
             'success' => true,
-            'alias' => $user->alias
+            'session' => [
+                'expires_at' => $session->expires_at,
+                'token' => $session->token,
+            ]
         ];
     }
 
