@@ -6,9 +6,17 @@ const CSRF_TOKEN = document.querySelector(`meta[name=csrf-token]`)
 const alias = document.querySelector(`[name=alias]`)
 const username = document.querySelector(`[name=username]`)
 const password = document.querySelector(`[name=password]`)
+const passwordRetyped = document.querySelector(`[name=password-retyped]`)
 const loginStatus = document.querySelector(`[id=login-status]`)
 const submitButton = document.querySelector(`[id=submit-button]`)
 const form = document.getElementsByTagName(`form`)
+
+function viewPass(target) {
+    let elem = document.querySelector(`#${target}`)
+    let type = elem.type == 'password' ? 'text' : 'password'
+
+    elem.type = type
+}
 
 function resetRegisterStatus() {
     loginStatus.innerHTML = `
@@ -36,7 +44,7 @@ function formDisabled() {
     submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> wait...`
 }
 
-function loginProcess(params = {}) {
+function registerProcess(params = {}) {
     let icon = params.icon ?? ''
     let field = params.field ?? null
     let status = params.status ?? 'default'
@@ -62,7 +70,7 @@ function loginProcess(params = {}) {
 
     if (status == 'success') {
         icon = icon ?? `fas fa-check`
-        message = message ?? `Complete ${field}`
+        message = message ?? `Register Succeded! redirecting in <span id="sign-in-count">3</span>...`
     }
 
     loginStatus.innerHTML = `
@@ -75,7 +83,13 @@ function loginProcess(params = {}) {
 const submitForm = async () => {
     formDisabled()
 
-    if (alias.value == '' || username.value == '' || password.value == '') {
+    if (alias.value == '' || username.value == '' || password.value == '' || passwordRetyped.value == '') {
+        formEnabled()
+
+        return
+    }
+
+    if (password.value != passwordRetyped.value) {
         formEnabled()
 
         return
@@ -99,7 +113,7 @@ const submitForm = async () => {
             formEnabled()
 
             if (response.has_errors == true) {
-                loginProcess({
+                registerProcess({
                     status: "danger",
                     field: response.error,
                     message: response.message,
@@ -109,22 +123,55 @@ const submitForm = async () => {
                 return
             }
 
-
-            loginProcess({
+            registerProcess({
                 status: "warning",
                 message: response.message,
                 icon: "fas fa-wifi"
             })
+
+            return
         }
 
-        //location.href = '/posts'
+        if (response.hasOwnProperty('success')) {
+
+            registerProcess({
+                status: "success"
+            })
+
+            let time = 4
+            let counter = setInterval(() => {
+                time--;
+                document.querySelector('#sign-in-count').innerHTML = time
+                if (time == 0) {
+                    clearInterval(counter)
+                    location.href = '/sign-in.html'
+                }
+            }, 1000);
+
+            return
+        }
+
         formEnabled()
+        return
 
     }).catch((error) => {
         formEnabled()
-        loginProcess({status:'danger', message:'connection error', icon:'fas fa-wifi'})
+        registerProcess({status:'danger', message:'connection error', icon:'fas fa-wifi'})
     })
 }
+
+alias.addEventListener('focus', () => {
+    resetRegisterStatus()
+})
+
+alias.addEventListener('input', function(e) {
+    let start = this.selectionStart
+    let end = this.selectionEnd
+    this.value = this.value.replace(/[^A-Za-z0-9._-]/g, '')
+    this.value = this.value.replace(/\s+/g, '')
+    this.value = this.value.toLowerCase()
+    this.setSelectionRange(start, end)
+})
 
 username.addEventListener('focus', () => {
     resetRegisterStatus()
@@ -134,7 +181,25 @@ password.addEventListener('focus', function() {
     resetRegisterStatus()
 })
 
-password.addEventListener('keyup', event => {
+password.addEventListener('input', function(e) {
+    let start = this.selectionStart
+    let end = this.selectionEnd
+    this.value = this.value.replace(/\s+/g, '')
+    this.setSelectionRange(start, end)
+})
+
+passwordRetyped.addEventListener('focus', function() {
+    resetRegisterStatus()
+})
+
+passwordRetyped.addEventListener('input', function(e) {
+    let start = this.selectionStart
+    let end = this.selectionEnd
+    this.value = this.value.replace(/\s+/g, '')
+    this.setSelectionRange(start, end)
+})
+
+passwordRetyped.addEventListener('keyup', event => {
     if (event.keyCode === 13) submitForm()
 })
 

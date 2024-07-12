@@ -4,7 +4,7 @@ namespace App\Support;
 
 class Random
 {
-    public function key(int $length = 64): string
+    public function token(int $length = 64): string
     {
         return bin2hex(random_bytes($length / 2));
     }

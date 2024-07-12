@@ -98,12 +98,12 @@ class MemberAuthController
 
         $alias_exists = Member::user()->get()->alias($request->alias);
         if ($alias_exists) {
-            return (object) ['error' => 'alias', 'message' => 'name already exists'];
+            return (object) ['error' => 'alias', 'message' => 'User alias has already been registered'];
         }
 
         $username_exists = Member::user()->get()->userName($request->username);
         if ($username_exists) {
-            return (object) ['error' => 'username', 'message' => 'username already exists'];
+            return (object) ['error' => 'username', 'message' => 'User email has already been registered'];
         }
 
         try {
@@ -122,7 +122,7 @@ class MemberAuthController
                 return $user;
             }
 
-            $profile = (object) Member::profile()->set([
+            $profile = Member::profile()->set([
                 'user_id' => $user->id,
                 'email' => $user->username,
                 'name' => $user->alias
@@ -132,23 +132,16 @@ class MemberAuthController
                 return $profile;
             }
 
-            $setting = (object) Member::setting()->set([
-                'user_id' => $user->id,
-                'params' => json_encode([])
-            ]);
-
-            if (isset($setting->error)) {
-                return $setting;
-            }
-
             DB::commit();
 
-            return $request;
+            return (object) ['success' => true];
 
         } catch (\Exception $e) {
             DB::rollBack();
 
             Debug::log($e->getMessage());
+
+            return (object) ['error' => 'account', 'message' => 'User register has failed.'];
         }
     }
 

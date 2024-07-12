@@ -7,22 +7,32 @@
         <div class="col-md-10 mx-auto col-lg-5">
             <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-3" name="alias" id="alias" placeholder="alias">
+                    <input type="text" class="form-control rounded-3 mb-1" name="alias" id="alias" placeholder="alias">
                     <label for="alias">Alias name</label>
+                    <small class="text-body-secondary">From 4 to 16 with <i>a-z 0-9 _-.</i> chars.</small>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="email" class="form-control rounded-3" name="username" id="username" placeholder="name@example.com">
                     <label for="username">Email address</label>
+                    <small class="text-body-secondary">Your daily email to connect.</small>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control rounded-3" name="password" id="password"  placeholder="Password">
+                    <input type="password" class="form-control rounded-3 mb-1" name="password" id="password"  placeholder="Password">
                     <label for="password">Password</label>
+                    <small class="text-body-secondary">From 8 to 32 with at least <i>A-Z a-z 0-9 (special)</i> chars.<a role="button" class="link" onclick="viewPass('password')">(view)</a></small>
                 </div>
-                <small class="text-body-secondary">By clicking Sign up, you agree to the <a href="/terms-of-use.html" target="_blank" class="text-decoration-none">terms of use</a>.</small>
-                <br><br>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control rounded-3" name="password-retyped" id="password-retyped"  placeholder="Password">
+                    <label for="password-retyped">Re Type Password</label>
+                    <small class="text-body-secondary">Retype previous password <a role="button" class="link" onclick="viewPass('password-retyped')">(view)</a></small>
+                </div>
                 <div id="login-status">
                     <div class="alert alert-light fade show alert-dismissible" role="alert">&nbsp;</div>
                 </div>
+                <small class="text-body-secondary">
+                    By clicking Sign up, you agree to the <a href="/terms-of-use.html" target="_blank" class="text-decoration-none">terms of use</a>.
+                </small>
+                <br><br>
                 <button type="submit" id="submit-button" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary">SIGN UP <i class="fas fa-sign-in"></i></button>
 
                 <hr class="my-4">

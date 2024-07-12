@@ -10,24 +10,39 @@ use App\Support\Random;
  */
 class SupportRandomTest extends TestCase
 {
-    /**
-     * A basic test example.
-     */
-    public function test_random_class_integer_lenght_is_true_response(): void
+    public function test_integer_method_output_lenght_is_equal_as_required(): void
     {
-        if (\strlen((new Random)->integer(11)) == 11) {
+        if (\strlen((new Random)->integer(8)) == 8) {
             $this->assertTrue(true);
         } else {
             $this->assertTrue(false);
         }
     }
 
-    public function test_random_class_integer_lenght_is_false_response(): void
+    public function test_integer_method_output_lenght_is_not_equal_as_required(): void
     {
-        if (\strlen((new Random)->integer(11)) == 10) {
+        if (\strlen((new Random)->integer(8)) == 10) {
             $this->assertFalse(true);
         } else {
             $this->assertFalse(false);
+        }
+    }
+
+    public function test_token_method_default_lenght_is_64_char(): void
+    {
+        if (\strlen((new Random)->token()) == 64) {
+            $this->assertTrue(true);
+        } else {
+            $this->assertTrue(false);
+        }
+    }
+
+    public function test_token_method_custom_lenght_is_16_char(): void
+    {
+        if (\strlen((new Random)->token(16)) == 16) {
+            $this->assertTrue(true);
+        } else {
+            $this->assertTrue(false);
         }
     }
 
