@@ -9,8 +9,6 @@ class ApiAuthMemberRouter
 {
     public function login(Request $request)
     {
-        $request = json_decode($request->getContent());
-
         $response = (new MemberAuthController)->login($request);
 
         return response()->json($response);

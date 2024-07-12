@@ -21,6 +21,11 @@ class MemberSessionValidation extends DomainValidationAbstract
         return $this->val()->id($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
     }
 
+    public function ip_address($value)
+    {
+        return $this->val()->ip($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+    }
+
     public function in_standby($value)
     {
         return $this->val()->boolean($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
@@ -43,7 +48,12 @@ class MemberSessionValidation extends DomainValidationAbstract
 
     public function token($value)
     {
-        return $this->val()->text($value, [64, 64]) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+        return $this->val()->token($value, [16, 16]) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+    }
+
+    public function user_agent($value)
+    {
+        return $this->val()->text($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
     }
 
 }

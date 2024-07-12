@@ -32,8 +32,8 @@ class MemberSessionObject extends DomainObjectAbstract implements DomainObjectIn
         $object->expires_at = $row->expires_at ?? null;
         $object->token      = $row->token ?? null;
         $object->user_agent = $row->user_agent ?? null;
-        $object->created_at = $row->created_at ? null : $row->created_at->format('Y-m-d H:i:s');
-        $object->updated_at = $row->updated_at ? null : $row->updated_at->format('Y-m-d H:i:s');
+        $object->created_at = $row->created_at ? $row->created_at->toDateTimeString() : null;
+        $object->updated_at = $row->updated_at ? $row->updated_at->toDateTimeString() : null;
 
         return $object;
     }

@@ -111,4 +111,19 @@ class ValidatorController
         return $value;
     }
 
+    public function datetime(string $value): mixed
+    {
+        return $value;
+    }
+
+    public function token(string $value): mixed
+    {
+        return $value;
+    }
+
+    public function ip(string $value): mixed
+    {
+        return $value;
+    }
+
 }

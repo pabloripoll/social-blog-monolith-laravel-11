@@ -57,7 +57,7 @@ function loginProcess(params = {}) {
 
     if (status == 'success') {
         icon = icon ?? `fas fa-check`
-        message = message ?? `Complete ${field}`
+        message = message ?? `Login Succeded! redirecting in <span id="sign-in-count">3</span>...`
     }
 
     loginStatus.innerHTML = `
@@ -108,9 +108,31 @@ const submitForm = async () => {
                 message: response.message,
                 icon: "fas fa-wifi"
             })
+
+            return
         }
 
-        //location.href = '/posts'
+        if (response.hasOwnProperty('success')) {
+
+            registerProcess({
+                status: "success"
+            })
+
+            let time = 4
+            let counter = setInterval(() => {
+                time--;
+                document.querySelector('#sign-in-count').innerHTML = time
+                if (time == 0) {
+                    clearInterval(counter)
+                    location.href = ''
+                }
+            }, 1000);
+
+            return
+        }
+
+        formEnabled()
+        return
 
     }).catch((error) => {
         formEnabled()
@@ -128,6 +150,13 @@ password.addEventListener('focus', function() {
 
 password.addEventListener('keyup', event => {
     if (event.keyCode === 13) submitForm()
+})
+
+password.addEventListener('input', function(e) {
+    let start = this.selectionStart
+    let end = this.selectionEnd
+    this.value = this.value.replace(/\s+/g, '')
+    this.setSelectionRange(start, end)
 })
 
 submitButton.addEventListener('keyup', event => {
