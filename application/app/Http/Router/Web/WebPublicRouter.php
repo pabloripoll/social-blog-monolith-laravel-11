@@ -17,7 +17,7 @@ class WebPublicRouter
     public function __construct(Request $request)
     {
         if ($request->session()->has('member')) {
-            $this->session = $request->session()->get('member');
+            $this->session = (object) $request->session()->get('member');
         }
     }
 

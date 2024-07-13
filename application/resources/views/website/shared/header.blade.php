@@ -33,7 +33,7 @@
                 @else
                     <div class="flex-shrink-0 dropdown">
                         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="/theme/custom/image/no-user.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
+                            <img src="{{ $session->image ?? '/theme/custom/image/no-user.jpg' }}" alt="mdo" width="32" height="32" class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu text-small shadow">
                             <li>

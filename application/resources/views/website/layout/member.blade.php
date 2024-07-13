@@ -6,7 +6,9 @@
         <main class="col-10">
             <div class="row">
                 <div class="col-md-9">
-
+                    <pre>
+                        {{ print_r($session) }}
+                    </pre>
                 </div><!-- /.main -->
 
                 <div class="col-md-3">
