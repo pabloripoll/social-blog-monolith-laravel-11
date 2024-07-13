@@ -20,8 +20,28 @@ class WebMemberRouter
         }
     }
 
-    /**
-     * Auth
-     */
+    public function profile()
+    {
+        $content = new \stdClass;
+
+        //$content->result = (new WallController)->listing($category, $paginate);
+
+        $content->layout = 'member';
+        $content->session = $this->session;
+
+        return view('website.template', (array) $content);
+    }
+
+    public function settings()
+    {
+        $content = new \stdClass;
+
+        //$content->result = (new BlogController)->listing($category, $paginate);
+
+        $content->layout = 'member';
+        $content->session = $this->session;
+
+        return view('website.template', (array) $content);
+    }
 
 }

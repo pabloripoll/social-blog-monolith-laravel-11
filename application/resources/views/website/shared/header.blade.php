@@ -37,10 +37,10 @@
                         </a>
                         <ul class="dropdown-menu text-small shadow">
                             <li>
-                                <a class="dropdown-item" href="#">Settings</a>
+                                <a class="dropdown-item" href="/member/profile">Profile</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">Profile</a>
+                                <a class="dropdown-item" href="/member/settings">Settings</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">

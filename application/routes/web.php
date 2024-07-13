@@ -43,10 +43,11 @@ Route::get('/member/init/{token}', [WebPublicRouter::class, 'init']);
 |-----------------------------------------------------------------------  /
 | Member
 |----------------------------------------------------------------------- */
-/* Route::group(['prefix' => env('MEMBER_PREFIX')], function () {
-    Route::get('', [AdminRouter::class, 'indexContent']);
-    Route::get('/{module}/{section}', [AdminRouter::class, 'exampleContent']);
-}); */
+Route::group(['prefix' => 'member'], function () {
+    Route::redirect('/', '/member/profile');
+    Route::get('/profile', [WebMemberRouter::class, 'profile']);
+    Route::get('/settings', [WebMemberRouter::class, 'settings']);
+});
 
 /*
 |-----------------------------------------------------------------------  /
