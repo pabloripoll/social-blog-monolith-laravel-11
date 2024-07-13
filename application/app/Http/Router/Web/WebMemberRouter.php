@@ -63,10 +63,10 @@ class WebMemberRouter
 
         //$content->result = (new WallController)->listing($category, $paginate);
 
-        $content->layout = 'member';
+        $content->layout = 'profile';
         $content->session = $this->session;
 
-        return view('website.template', (array) $content);
+        return view('website.member', (array) $content);
     }
 
     public function settings()
@@ -75,10 +75,10 @@ class WebMemberRouter
 
         //$content->result = (new BlogController)->listing($category, $paginate);
 
-        $content->layout = 'member';
+        $content->layout = 'settings';
         $content->session = $this->session;
 
-        return view('website.template', (array) $content);
+        return view('website.member', (array) $content);
     }
 
 }
