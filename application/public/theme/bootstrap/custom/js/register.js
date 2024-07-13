@@ -70,7 +70,7 @@ function registerProcess(params = {}) {
 
     if (status == 'success') {
         icon = icon ?? `fas fa-check`
-        message = message ?? `Register Succeded! redirecting in <span id="sign-in-count">3</span>...`
+        message = `Register Succeded! redirecting in <span id="sign-in-count">3</span>...`
     }
 
     loginStatus.innerHTML = `

@@ -62,7 +62,8 @@ class MemberAuthController
             'in_standby' => 0,
             'is_opened' => 0,
             'is_expired' => 1,
-            'stopped_at' => strtotime('now')
+            'stopped_at' => strtotime('now'),
+            'token' => ''
         ]);
     }
 
