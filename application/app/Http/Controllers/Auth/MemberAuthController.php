@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use Domain\Member;
-use App\Support\Debug;
 use App\Support\Random;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

@@ -3,12 +3,10 @@
 namespace App\Http\Router\Web;
 
 use Domain\Member;
-use App\Support\Debug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\Blog\WallController;
-use App\Http\Controllers\Auth\MemberAuthController;
 
 class WebPublicRouter
 {
