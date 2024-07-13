@@ -138,7 +138,7 @@ const submitForm = async () => {
                 status: "success"
             })
 
-            let time = 4
+            let time = 3
             let counter = setInterval(() => {
                 time--;
                 document.querySelector('#sign-in-count').innerHTML = time
