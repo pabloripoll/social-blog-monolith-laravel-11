@@ -4,6 +4,7 @@ use App\Http\Router\Bootstrap;
 use Illuminate\Support\Facades\Route;
 use App\Http\Router\Web\WebPublicRouter;
 use App\Http\Router\Web\WebMemberRouter;
+use App\Http\Middleware\MemberWebServerSession;
 
 /*
 |-----------------------------------------------------------------------  /
@@ -36,15 +37,16 @@ Route::get('/wall{extension}', [WebPublicRouter::class, 'wallContent'])->where('
 Route::get('/profiles/{pid?}', [WebPublicRouter::class, 'profileContent']);
 Route::get('/profiles/{pid}/posts', [WebPublicRouter::class, 'profilePostsContent']);
 
-Route::get('/member/exit', [WebPublicRouter::class, 'exit']);
-Route::get('/member/init/{token}', [WebPublicRouter::class, 'init']);
-
 /*
 |-----------------------------------------------------------------------  /
 | Member
 |----------------------------------------------------------------------- */
-Route::group(['prefix' => 'member'], function () {
+Route::group(['middleware' => MemberWebServerSession::class, 'prefix' => 'member'], function () {
     Route::redirect('/', '/member/profile');
+
+    Route::get('/exit', [WebMemberRouter::class, 'exit']);
+    Route::get('/init/{token}', [WebMemberRouter::class, 'init'])->withoutMiddleware([MemberWebServerSession::class]);
+
     Route::get('/profile', [WebMemberRouter::class, 'profile']);
     Route::get('/settings', [WebMemberRouter::class, 'settings']);
 });

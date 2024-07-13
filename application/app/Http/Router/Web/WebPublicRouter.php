@@ -24,38 +24,6 @@ class WebPublicRouter
     /**
      * Auth
      */
-    public function init(Request $request, $token)
-    {
-        if ($this->session) {
-            return Redirect::to('/posts.html');
-        }
-
-        $session = (new MemberAuthController)->createServerSession($request, $token);
-
-        if (isset($session->error)) {
-            return Redirect::to('/sign-in.html');
-        }
-
-        if (isset($session->member)) {
-            return Redirect::to('/posts.html');
-        }
-    }
-
-    public function exit(Request $request)
-    {
-        if (! $this->session) {
-            return Redirect::to('/sign-in.html');
-        }
-
-        $session = (new MemberAuthController)->deleteServerSession($request);
-
-        if (isset($session->removed)) {
-            return Redirect::to('/posts.html');
-        }
-
-        return response()->json($session);
-    }
-
     public function signInLayout()
     {
         if ($this->session) {
