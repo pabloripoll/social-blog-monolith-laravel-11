@@ -20,7 +20,17 @@ class MemberAuthController
         return (new Random)->token();
     }
 
-    public function extendSession(string $token): array | object
+    public function session(string $token): object
+    {
+        $session = Member::session()->get()->token($token);
+        if (! $session) {
+            return (object) ['error' => 'session not found'];
+        }
+
+        return $session;
+    }
+
+    public function extendSession(string $token): object
     {
         $session = Member::session()->get()->token($token);
         if (! $session) {
@@ -34,23 +44,18 @@ class MemberAuthController
         ]);
     }
 
-    public function stopSession(string $token): array | object
+    public function stopSession(int $session_id): object
     {
-        $session = Member::session()->get()->token($token);
-        if (! $session) {
-            return (object) ['error' => 'session not found'];
-        }
-
         return Member::session()->set([
-            'id' => $session->id,
+            'id' => $session_id,
             'in_standby' => 0,
             'is_opened' => 0,
             'is_expired' => 1,
-            'token' => '',
+            'stopped_at' => strtotime('now')
         ]);
     }
 
-    public function startSession(int $session_id): array | object
+    public function startSession(int $session_id): object
     {
         return Member::session()->set([
             'id' => $session_id,
@@ -60,7 +65,7 @@ class MemberAuthController
         ]);
     }
 
-    public function createSession(object $user, object $client): array | object
+    public function createSession(object $user, object $client): object
     {
         return Member::session()->set([
             'user_id' => $user->id,
@@ -110,14 +115,21 @@ class MemberAuthController
 
     public function deleteServerSession(Request $request): object
     {
-        $token = $request->session()->get('member.member.token');
+        $token = $request->session()->get('member.token');
 
         if ($token) {
-            $session = $this->stopSession($token);
+            $session = $this->session($token);
+
+            if (! $session) {
+                return (object) ['error' => 'session not found'];
+            }
+
+            $session_stop = $this->stopSession($session->id);
+
             $request->session()->forget('member');
         }
 
-        return (object) ['member' => 'deleted'];
+        return (object) ['removed' => $token];
     }
 
     public function login(Request $request): array | object

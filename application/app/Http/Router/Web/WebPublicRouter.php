@@ -49,7 +49,11 @@ class WebPublicRouter
 
         $session = (new MemberAuthController)->deleteServerSession($request);
 
-        return Redirect::to('/posts.html');
+        if (isset($session->removed)) {
+            return Redirect::to('/posts.html');
+        }
+
+        return response()->json($session);
     }
 
     public function signInLayout()
