@@ -3,7 +3,9 @@
 use App\Http\Router\Bootstrap;
 use Illuminate\Support\Facades\Route;
 use App\Http\Router\Web\WebPublicRouter;
+use App\Http\Router\Web\WebAdminRouter;
 use App\Http\Router\Web\WebMemberRouter;
+use App\Http\Middleware\AdminWebServerSession;
 use App\Http\Middleware\MemberWebServerSession;
 
 /*
@@ -55,8 +57,13 @@ Route::group(['middleware' => MemberWebServerSession::class, 'prefix' => 'member
 |-----------------------------------------------------------------------  /
 | Admin
 |----------------------------------------------------------------------- */
-/* Route::group(['prefix' => env('ADMIN_PREFIX')], function () {
-    Route::get('/', [AdminRouter::class, 'indexContent']);
-    Route::get('/sign-in', [AdminRouter::class, 'indexContent']);
-    Route::get('/{module}/{section}', [AdminRouter::class, 'exampleContent']);
-}); */
+Route::group(['middleware' => AdminWebServerSession::class, 'prefix' => env('ADMIN_PREFIX')], function () {
+    Route::redirect('/', '/'.env('ADMIN_PREFIX').'/profile');
+
+    Route::get('/exit', [WebAdminRouter::class, 'exit']);
+    Route::get('/sign-in', [WebAdminRouter::class, 'init'])->withoutMiddleware([AdminWebServerSession::class]);
+    Route::get('/init/{token}', [WebAdminRouter::class, 'init'])->withoutMiddleware([AdminWebServerSession::class]);
+
+    Route::get('/profile', [WebAdminRouter::class, 'profile']);
+    Route::get('/settings', [WebAdminRouter::class, 'settings']);
+});
