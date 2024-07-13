@@ -6,7 +6,6 @@ use Domain\Member;
 use App\Support\Debug;
 use App\Support\Random;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\User\MemberUserController;
 
@@ -30,17 +29,29 @@ class MemberAuthController
         return $session;
     }
 
-    public function extendSession(string $token): object
+    public function user(int $user_id): object
     {
-        $session = Member::session()->get()->token($token);
+        $user = Member::user()->get()->id($user_id);
+        if (! $user) {
+            return (object) ['error' => 'user not found'];
+        }
+
+        return $user;
+    }
+
+    public function extendSessionTime(string $token): object
+    {
+        $session = $this->session($token);
         if (! $session) {
             return (object) ['error' => 'session not found'];
         }
 
+        $user = $this->user($session->user_id);
+
         return Member::session()->set([
             'id' => $session->id,
-            'recovered' => $session->recovered + 1,
-            //'expires_at' => strtotime(date("Y/m/d H:i:s", strtotime("+".$user->session_time." minutes"))),
+            'reused' => $session->reused + 1,
+            'expires_at' => strtotime('now', strtotime("+".$user->session_time." minutes")),
         ]);
     }
 
@@ -88,18 +99,18 @@ class MemberAuthController
             return $input;
         }
 
-        $session = Member::session()->get()->token($token);
+        $session = $this->session($token);
         if (! $session) {
             return (object) ['error' => 'session not found'];
         }
 
-        if (! $session->in_standby || $session->is_expired || ! ($session->expires_at > strtotime($session->created_at))) {
+        if (! $session->in_standby || $session->is_expired || ! ($session->expires_at > strtotime('now'))) {
             return (object) ['error' => 'session is not valid'];
         }
 
         $start = $this->startSession($session->id);
 
-        $user = Member::user()->get()->id($session->user_id);
+        $user = $this->user($session->user_id);
 
         $payload = [
             'token' => $token,
