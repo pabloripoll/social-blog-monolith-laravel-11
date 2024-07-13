@@ -20,11 +20,13 @@ return new class extends Migration
         Schema::create($this->table(), function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
-            $table->string('ip_address', 45)->nullable();
             $table->boolean('in_standby')->default('0');
             $table->boolean('is_opened')->default('0');
             $table->boolean('is_expired')->default('0');
-            $table->dateTime('expires_at', precision: 0);
+            $table->bigInteger('expires_at');
+            $table->bigInteger('stopped_at')->nullable();
+            $table->integer('reused')->default('0');
+            $table->string('ip_address', 45)->nullable();
             $table->string('token', length: 64)->unique();
             $table->text('user_agent')->nullable();
             $table->timestamps();

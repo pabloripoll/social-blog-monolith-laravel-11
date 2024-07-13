@@ -17,21 +17,24 @@ class MemberAuthController
      */
     public function createToken()
     {
-
+        return (new Random)->token();
     }
 
-    public function updateSession(object $session): array | object
+    public function extendSession(string $token): array | object
     {
-        $response = new \stdClass;
+        $session = Member::session()->get()->token($token);
+        if (! $session) {
+            return (object) ['error' => 'session not found'];
+        }
 
-        $response->session = Member::session()->set([
-            'id' => $session->id
+        return Member::session()->set([
+            'id' => $session->id,
+            'recovered' => $session->recovered + 1,
+            //'expires_at' => strtotime(date("Y/m/d H:i:s", strtotime("+".$user->session_time." minutes"))),
         ]);
-
-        return $response;
     }
 
-    public function terminateSession(string $token): array | object
+    public function stopSession(string $token): array | object
     {
         $session = Member::session()->get()->token($token);
         if (! $session) {
@@ -42,8 +45,18 @@ class MemberAuthController
             'id' => $session->id,
             'in_standby' => 0,
             'is_opened' => 0,
-            'is_expired' => 0,
+            'is_expired' => 1,
             'token' => '',
+        ]);
+    }
+
+    public function startSession(int $session_id): array | object
+    {
+        return Member::session()->set([
+            'id' => $session_id,
+            'in_standby' => 0,
+            'is_opened' => 1,
+            'is_expired' => 0
         ]);
     }
 
@@ -55,13 +68,13 @@ class MemberAuthController
             'in_standby' => 1,
             'is_opened' => 0,
             'is_expired' => 0,
-            'expires_at' => \date("Y/m/d H:i:s", strtotime("+30 minutes")),
-            'token' => (new Random)->token(),
+            'expires_at' => strtotime(date("Y/m/d H:i:s", strtotime("+".$user->session_time." minutes"))),
+            'token' => $this->createToken(),
             'user_agent' => $client->browser,
         ]);
     }
 
-    public function serverSessionInit(Request $request, string $token): object
+    public function createServerSession(Request $request, string $token): object
     {
         $input = Member::session()->object()->isValid([
             'token' => $token
@@ -75,21 +88,19 @@ class MemberAuthController
             return (object) ['error' => 'session not found'];
         }
 
-        $in_standby = $session->in_standby;
-        $is_expired = $session->is_expired;
-        $expires_at = strtotime($session->expires_at);
-        $created_at = strtotime($session->created_at);
-
-        if (! $in_standby || $is_expired || ! ($expires_at > $created_at)) {
-            return (object) ['error' => 'session not valid'];
+        if (! $session->in_standby || $session->is_expired || ! ($session->expires_at > strtotime($session->created_at))) {
+            return (object) ['error' => 'session is not valid'];
         }
+
+        $start = $this->startSession($session->id);
 
         $user = Member::user()->get()->id($session->user_id);
 
         $payload = [
             'token' => $token,
             'alias' => $user->alias,
-            'expires_at' => $expires_at
+            'image' => null,
+            'expires_at' => $session->expires_at
         ];
 
         $request->session()->put('member', $payload);
@@ -97,12 +108,12 @@ class MemberAuthController
         return (object) ['member' => $payload];
     }
 
-    public function serverSessionDelete(Request $request): object
+    public function deleteServerSession(Request $request): object
     {
         $token = $request->session()->get('member.member.token');
 
         if ($token) {
-            $session = $this->terminateSession($token);
+            $session = $this->stopSession($token);
             $request->session()->forget('member');
         }
 
@@ -123,7 +134,7 @@ class MemberAuthController
         ]);
 
         if ($input->has_errors) {
-            $input->message = 'values are not valid';
+            $input->message = 'login values are not valid';
 
             return $input;
         }
@@ -152,8 +163,8 @@ class MemberAuthController
         return (object) [
             'success' => true,
             'session' => [
-                'expires_at' => $session->expires_at,
                 'token' => $session->token,
+                'expires_at' => $session->expires_at,
             ]
         ];
     }

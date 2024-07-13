@@ -30,9 +30,10 @@ class AdminUserObject extends DomainObjectAbstract implements DomainObjectInterf
         $object->username = $row->username ?? null;
         $object->alias = $row->alias ?? null;
         $object->password = $row->password ?? null;
-        $object->created_by_user_id = $row->created_by_user_id ?? null;
-        $object->created_at = $row->created_at ? null : $row->created_at->format('Y-m-d H:i:s');
-        $object->updated_at = $row->updated_at ? null : $row->updated_at->format('Y-m-d H:i:s');
+        $object->session_time = $row->session_time ?? null;
+        $object->created_by_admin_id = $row->created_by_admin_id ?? null;
+        $object->created_at = $row->created_at ? $row->created_at->toDateTimeString() : null;
+        $object->updated_at = $row->updated_at ? $row->updated_at->toDateTimeString() : null;
 
         return $object;
     }

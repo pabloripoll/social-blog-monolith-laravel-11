@@ -33,14 +33,17 @@ class MemberUserController
         try {
             DB::beginTransaction();
 
-            $user = Member::user()->set([
+            $params = [
                 'pid' => (new Random)->integer(11),
                 'is_active' => 1,
                 'alias' => $input->valid->alias,
                 'username' => $input->valid->username,
                 'password' => $input->valid->password,
-                'created_by_user_id' => $request->creator_id ?? 1
-            ]);
+            ];
+
+            ! isset($request->admin_id) ? : $params['created_by_admin_id'] = $request->admin_id;
+
+            $user = Member::user()->set($params);
 
             if (isset($user->error)) {
                 return $user;

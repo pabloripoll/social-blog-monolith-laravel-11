@@ -46,7 +46,12 @@ class MemberUserValidation extends DomainValidationAbstract
         return $this->val()->password($value, [8, 128]) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
     }
 
-    public function created_by_user_id($value)
+    public function session_time($value)
+    {
+        return $this->val()->number($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+    }
+
+    public function created_by_admin_id($value)
     {
         return $this->val()->id($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
     }

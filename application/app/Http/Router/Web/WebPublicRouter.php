@@ -30,10 +30,9 @@ class WebPublicRouter
             return Redirect::to('/posts.html');
         }
 
-        $session = (new MemberAuthController)->serverSessionInit($request, $token);
+        $session = (new MemberAuthController)->createServerSession($request, $token);
 
         if (isset($session->error)) {
-            //return response()->json($session);
             return Redirect::to('/sign-in.html');
         }
 
@@ -48,7 +47,7 @@ class WebPublicRouter
             return Redirect::to('/sign-in.html');
         }
 
-        $session = (new MemberAuthController)->serverSessionDelete($request);
+        $session = (new MemberAuthController)->deleteServerSession($request);
 
         return Redirect::to('/posts.html');
     }

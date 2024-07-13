@@ -13,11 +13,13 @@ class MemberSessionModel extends Model
      */
     protected $fillable = [
         'user_id',
-        'ip_address',
         'in_standby',
         'is_opened',
         'is_expired',
         'expires_at',
+        'stopped_at',
+        'reused',
+        'ip_address',
         'token',
         'user_agent'
     ];

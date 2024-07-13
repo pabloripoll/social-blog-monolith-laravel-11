@@ -31,7 +31,8 @@ class MemberUserObject extends DomainObjectAbstract implements DomainObjectInter
         $object->username = $row->username ?? null;
         $object->alias = $row->alias ?? null;
         $object->password = $row->password ?? null;
-        $object->created_by_user_id = $row->created_by_user_id ?? null;
+        $object->session_time = $row->session_time ?? null;
+        $object->created_by_admin_id = $row->created_by_admin_id ?? null;
         $object->created_at = $row->created_at ? $row->created_at->toDateTimeString() : null;
         $object->updated_at = $row->updated_at ? $row->updated_at->toDateTimeString() : null;
 

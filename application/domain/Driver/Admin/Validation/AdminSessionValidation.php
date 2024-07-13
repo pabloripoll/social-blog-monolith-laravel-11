@@ -38,12 +38,32 @@ class AdminSessionValidation extends DomainValidationAbstract
 
     public function expires_at($value)
     {
-        return $this->val()->datetime($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+        return $this->val()->number($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+    }
+
+    public function stopped_at($value)
+    {
+        return $this->val()->number($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+    }
+
+    public function reused($value)
+    {
+        return $this->val()->number($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+    }
+
+    public function ip_address($value)
+    {
+        return $this->val()->ip($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
     }
 
     public function token($value)
     {
-        return $this->val()->text($value, [64, 64]) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+        return $this->val()->token($value, [16, 64]) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+    }
+
+    public function user_agent($value)
+    {
+        return $this->val()->text($value) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
     }
 
 }

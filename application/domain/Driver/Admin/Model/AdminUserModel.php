@@ -15,10 +15,12 @@ class AdminUserModel extends Model
         'pid',
         'is_active',
         'is_banned',
+        'is_superadmin',
         'username',
         'alias',
         'password',
-        'created_by_user_id'
+        'session_time',
+        'created_by_admin_id'
     ];
 
     public function assignable(): array
