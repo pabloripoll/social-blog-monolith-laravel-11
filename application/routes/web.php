@@ -36,10 +36,8 @@ Route::get('/wall{extension}', [WebPublicRouter::class, 'wallContent'])->where('
 Route::get('/profiles/{pid?}', [WebPublicRouter::class, 'profileContent']);
 Route::get('/profiles/{pid}/posts', [WebPublicRouter::class, 'profilePostsContent']);
 
-Route::get('/member/exit/{token}', [WebMemberRouter::class, 'exit']);
-Route::get('/member/init/{token}', [WebMemberRouter::class, 'init']);
-Route::get('/member/profile', [WebMemberRouter::class, 'profile']);
-Route::get('/member/settings', [WebMemberRouter::class, 'settings']);
+Route::get('/member/exit', [WebPublicRouter::class, 'exit']);
+Route::get('/member/init/{token}', [WebPublicRouter::class, 'init']);
 
 /*
 |-----------------------------------------------------------------------  /

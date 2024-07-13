@@ -31,13 +31,20 @@ class MemberAuthController
         return $response;
     }
 
-    public function terminateSession(?int $session_token): array | object
+    public function terminateSession(string $token): array | object
     {
-        $response = new \stdClass;
+        $session = Member::session()->get()->token($token);
+        if (! $session) {
+            return (object) ['error' => 'session not found'];
+        }
 
-        $response->session = Member::session()->delete($session_token);
-
-        return $response;
+        return Member::session()->set([
+            'id' => $session->id,
+            'in_standby' => 0,
+            'is_opened' => 0,
+            'is_expired' => 0,
+            'token' => '',
+        ]);
     }
 
     public function createSession(object $user, object $client): array | object
@@ -54,7 +61,7 @@ class MemberAuthController
         ]);
     }
 
-    public function localSessionInit(Request $request, string $token): object
+    public function serverSessionInit(Request $request, string $token): object
     {
         $input = Member::session()->object()->isValid([
             'token' => $token
@@ -79,8 +86,7 @@ class MemberAuthController
 
         $user = Member::user()->get()->id($session->user_id);
 
-        $payload = [];
-        $payload['member'] = [
+        $payload = [
             'token' => $token,
             'alias' => $user->alias,
             'expires_at' => $expires_at
@@ -89,6 +95,18 @@ class MemberAuthController
         $request->session()->put('member', $payload);
 
         return (object) ['member' => $payload];
+    }
+
+    public function serverSessionDelete(Request $request): object
+    {
+        $token = $request->session()->get('member.member.token');
+
+        if ($token) {
+            $session = $this->terminateSession($token);
+            $request->session()->forget('member');
+        }
+
+        return (object) ['member' => 'deleted'];
     }
 
     public function login(Request $request): array | object

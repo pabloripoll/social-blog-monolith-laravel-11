@@ -23,28 +23,5 @@ class WebMemberRouter
     /**
      * Auth
      */
-    public function init(Request $request, $token)
-    {
-        if ($this->session) {
-            return Redirect::to('/posts.html');
-        }
-
-        $session = (new MemberAuthController)->localSessionInit($request, $token);
-
-        if (isset($session->error)) {
-            //return response()->json($session);
-            return Redirect::to('/sign-in.html');
-        }
-
-        if (isset($session->member)) {
-            return Redirect::to('/posts.html');
-        }
-    }
-
-    public function exit()
-    {
-        return null;
-    }
-
 
 }
