@@ -27,7 +27,7 @@ return new class extends Migration
             $table->bigInteger('stopped_at')->nullable();
             $table->integer('reused')->default('0');
             $table->string('ip_address', 45)->nullable();
-            $table->string('token', length: 64)->unique();
+            $table->string('token', length: 64)->unique()->nullable();
             $table->text('user_agent')->nullable();
             $table->timestamps();
 
