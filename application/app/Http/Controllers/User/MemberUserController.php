@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class MemberUserController
 {
-    public function createUser(object $request): array | object
+    public function createUser(object $request): object
     {
         $input = Member::user()->object()->isValid([
             'alias' => $request->alias,
@@ -60,7 +60,7 @@ class MemberUserController
         }
     }
 
-    public function createProfile(object $params): array | object
+    public function createProfile(object $params): object
     {
         if (! isset($params->user_id) || ! isset($params->email) || ! isset($params->name)) {
             return (object) ['error' => 'user_id email and name must be present'];

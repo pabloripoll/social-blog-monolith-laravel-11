@@ -19,24 +19,21 @@ class MemberAuthController
         return (new Random)->token();
     }
 
+    public function isValidToken(string $token): object
+    {
+        return Member::session()->object()->isValid([
+            'token' => $token
+        ]);
+    }
+
     public function session(string $token): object
     {
-        $session = Member::session()->get()->token($token);
-        if (! $session) {
-            return (object) ['error' => 'session not found'];
-        }
-
-        return $session;
+        return Member::session()->get()->token($token);
     }
 
     public function user(int $user_id): object
     {
-        $user = Member::user()->get()->id($user_id);
-        if (! $user) {
-            return (object) ['error' => 'user not found'];
-        }
-
-        return $user;
+        return Member::user()->get()->id($user_id);
     }
 
     public function extendSessionTime(string $token): object
@@ -93,9 +90,8 @@ class MemberAuthController
 
     public function createServerSession(Request $request, string $token): object
     {
-        $input = Member::session()->object()->isValid([
-            'token' => $token
-        ]);
+        $input = $this->isValidToken($token);
+
         if ($input->has_errors) {
             return $input;
         }
@@ -136,12 +132,12 @@ class MemberAuthController
                 return (object) ['error' => 'session not found'];
             }
 
-            $session_stop = $this->stopSession($session->id);
+            $session = $this->stopSession($session->id);
 
             $request->session()->forget('member');
         }
 
-        return (object) ['removed' => $token];
+        return (object) ['removed' => $session ?? $token];
     }
 
     public function login(Request $request): array | object
@@ -178,8 +174,8 @@ class MemberAuthController
             ];
         }
 
-        // create session
         $session = $this->createSession($user, $client);
+
         if (isset($session->error)) {
             return $session;
         }
@@ -203,11 +199,11 @@ class MemberAuthController
             return $user;
         }
 
-        $params = new \stdClass;
-        $params->user_id = $user->id;
-        $params->email = $user->username;
-        $params->name = $user->alias;
-        $profile = (new MemberUserController)->createProfile($params);
+        $profile = (new MemberUserController)->createProfile((object) [
+            'user_id' => $user->id,
+            'email' => $user->username,
+            'name' => $user->alias
+        ]);
         if (isset($profile->error)) {
             return $profile;
         }
