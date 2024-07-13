@@ -97,28 +97,31 @@
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
                     <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
                 </form>
-                <a href="/sign-in.html" class="d-block link-secondary text-decoration-none">
-                    SIGN IN <i class="fas fa-user"></i>
-                </a>
-                <!-- <div class="flex-shrink-0 dropdown">
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/theme/custom/image/no-user.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
+                @if (empty($session))
+                    <a href="/sign-in.html" class="d-block link-secondary text-decoration-none">
+                        SIGN IN <i class="fas fa-user"></i>
                     </a>
-                    <ul class="dropdown-menu text-small shadow">
-                        <li>
-                            <a class="dropdown-item" href="#">Settings</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Profile</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="/exit">Sign out</a>
-                        </li>
-                    </ul>
-                </div> -->
+                @else
+                    <div class="flex-shrink-0 dropdown">
+                        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/theme/custom/image/no-user.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu text-small shadow">
+                            <li>
+                                <a class="dropdown-item" href="#">Settings</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Profile</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/exit">Sign out</a>
+                            </li>
+                        </ul>
+                    </div>
+                @endif
             </div>
         </div>
     </header>

@@ -48,7 +48,7 @@ class MemberSessionValidation extends DomainValidationAbstract
 
     public function token($value)
     {
-        return $this->val()->token($value, [16, 16]) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
+        return $this->val()->token($value, [16, 64]) ? $value : $this->error = [__FUNCTION__ => 'not valid'];
     }
 
     public function user_agent($value)

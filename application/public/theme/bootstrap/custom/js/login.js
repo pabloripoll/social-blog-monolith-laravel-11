@@ -118,13 +118,13 @@ const submitForm = async () => {
                 status: "success"
             })
 
-            let time = 4
+            let time = 3
             let counter = setInterval(() => {
                 time--;
                 document.querySelector('#sign-in-count').innerHTML = time
                 if (time == 0) {
                     clearInterval(counter)
-                    location.href = `/member/access/${response.session.token}`
+                    location.href = `/member/init/${response.session.token}`
                 }
             }, 1000);
 

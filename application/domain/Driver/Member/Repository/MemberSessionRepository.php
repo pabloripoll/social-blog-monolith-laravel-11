@@ -33,22 +33,16 @@ class MemberSessionRepository extends DomainRepositoryAbstract implements Domain
     /**
      * Get single entity
      */
-    public function byId(int $id): object | null
+    public function id(int $id): object | null
     {
         $row = $this->model()->where('id', '=', $id)->first() ?? null;
 
         return ! $row ? null : $this->dto($row);
     }
 
-    public function rowByColumns(array $columns): object | null
+    public function token(string $token): object | null
     {
-        $row = $this->model();
-
-        foreach ($columns as $key => $value) {
-            $row = $row->where($key, '=', $value);
-        }
-
-        $row = $row->first() ?? null;
+        $row = $this->model()->where('token', '=', $token)->first() ?? null;
 
         return ! $row ? null : $this->dto($row);
     }

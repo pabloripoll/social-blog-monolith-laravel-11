@@ -33,9 +33,16 @@ class MemberProfileRepository extends DomainRepositoryAbstract implements Domain
     /**
      * Get single entity
      */
-    public function byId(int $id): object | null
+    public function id(int $id): object | null
     {
         $row = $this->model()->where('id', '=', $id)->first() ?? null;
+
+        return ! $row ? null : $this->dto($row);
+    }
+
+    public function userId(int $user_id): object | null
+    {
+        $row = $this->model()->where('user_id', '=', $user_id)->first() ?? null;
 
         return ! $row ? null : $this->dto($row);
     }

@@ -47,7 +47,7 @@ class MemberUserRepository extends DomainRepositoryAbstract implements DomainRep
         return ! $row ? null : $this->dto($row);
     }
 
-    public function byId(int $id): object | null
+    public function id(int $id): object | null
     {
         $row = $this->model()->where('id', '=', $id)->first() ?? null;
 

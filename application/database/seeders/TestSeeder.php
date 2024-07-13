@@ -13,7 +13,7 @@ class TestSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = Member::user()->get()->byId(1);
+        $user = Member::user()->get()->id(1);
 
         $update = Member::user()->set([
             'id' => $user->id,

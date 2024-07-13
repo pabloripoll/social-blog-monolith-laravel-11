@@ -54,6 +54,43 @@ class MemberAuthController
         ]);
     }
 
+    public function localSessionInit(Request $request, string $token): object
+    {
+        $input = Member::session()->object()->isValid([
+            'token' => $token
+        ]);
+        if ($input->has_errors) {
+            return $input;
+        }
+
+        $session = Member::session()->get()->token($token);
+        if (! $session) {
+            return (object) ['error' => 'session not found'];
+        }
+
+        $in_standby = $session->in_standby;
+        $is_expired = $session->is_expired;
+        $expires_at = strtotime($session->expires_at);
+        $created_at = strtotime($session->created_at);
+
+        if (! $in_standby || $is_expired || ! ($expires_at > $created_at)) {
+            return (object) ['error' => 'session not valid'];
+        }
+
+        $user = Member::user()->get()->id($session->user_id);
+
+        $payload = [];
+        $payload['member'] = [
+            'token' => $token,
+            'alias' => $user->alias,
+            'expires_at' => $expires_at
+        ];
+
+        $request->session()->put('member', $payload);
+
+        return (object) ['member' => $payload];
+    }
+
     public function login(Request $request): array | object
     {
         $payload = json_decode($request->getContent());
@@ -63,8 +100,8 @@ class MemberAuthController
         ];
 
         $input = Member::user()->object()->isValid([
-            'username' => $payload->username ?? null,
-            'password' => $payload->password ?? null
+            'username' => $payload->username,
+            'password' => $payload->password
         ]);
 
         if ($input->has_errors) {

@@ -16,7 +16,7 @@ abstract class DomainObjectAbstract
 
         foreach ($input as $key => $value) {
             if (! method_exists($validate, $key)){
-                $reject[$key] = $key.' is not an entity property';
+                $reject[$key] = $key.' is not an domain entity property';
             } else {
                 $validate->$key($value) == $value ? $passed[$key] = trim($value) : $reject[$key] = $validate->errors()[$key];
             }

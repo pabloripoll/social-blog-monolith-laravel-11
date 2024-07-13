@@ -2,37 +2,55 @@
 
 namespace App\Http\Router\Web;
 
-use Carbon\Carbon;
 use App\Support\Debug;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\Blog\WallController;
 
 class WebPublicRouter
 {
-    public function exit()
+    protected $session;
+
+    public function __construct(Request $request)
     {
-        return null;
+        if ($request->session()->has('member')) {
+            $this->session = $request->session()->has('member');
+        }
     }
 
+    /**
+     * Auth
+     */
     public function signInLayout()
     {
-        $content = new \stdClass;
+        if ($this->session) {
+            return Redirect::to('/posts.html');
+        }
 
+        $content = new \stdClass;
         $content->layout = 'sign-in';
+        $content->session = $this->session;
 
         return view('website.template', (array) $content);
     }
 
     public function signUpLayout()
     {
-        $content = new \stdClass;
+        if ($this->session) {
+            return Redirect::to('/posts.html');
+        }
 
+        $content = new \stdClass;
         $content->layout = 'sign-up';
+        $content->session = $this->session;
 
         return view('website.template', (array) $content);
     }
 
+    /**
+     * Blog
+     */
     public function postsContent(?string $category = null, ?int $paginate = null)
     {
         $content = new \stdClass;
@@ -40,13 +58,9 @@ class WebPublicRouter
         $content->result = (new PostController)->listing($category, $paginate);
 
         $content->layout = 'posts';
+        $content->session = $this->session;
 
         return view('website.template', (array) $content);
-    }
-
-    public function asyncPostsContent()
-    {
-        return view('website.layout.posts', []);
     }
 
     public function postContent(?int $pid = null)
@@ -56,13 +70,9 @@ class WebPublicRouter
         $content->result = (new PostController)->getPost($pid);
 
         $content->layout = 'post';
+        $content->session = $this->session;
 
         return view('website.template', (array) $content);
-    }
-
-    public function asyncPostContent()
-    {
-        return view('website.layout.post', []);
     }
 
     public function wallContent(?string $category = null, ?int $paginate = null)
@@ -72,15 +82,14 @@ class WebPublicRouter
         $content->result = (new WallController)->listing($category, $paginate);
 
         $content->layout = 'wall';
+        $content->session = $this->session;
 
         return view('website.template', (array) $content);
     }
 
-    public function asyncWallContent()
-    {
-        return view('website.layout.wall', []);
-    }
-
+    /**
+     * Members
+     */
     public function profileContent(?string $category = null, ?int $paginate = null)
     {
         $content = new \stdClass;
@@ -88,13 +97,9 @@ class WebPublicRouter
         $content->result = (new WallController)->listing($category, $paginate);
 
         $content->layout = 'profile';
+        $content->session = $this->session;
 
         return view('website.template', (array) $content);
-    }
-
-    public function asyncProfileContent()
-    {
-        return view('website.layout.profile', []);
     }
 
     public function profilePostsContent(?string $category = null, ?int $paginate = null)
@@ -104,13 +109,9 @@ class WebPublicRouter
         $content->result = (new BlogController)->listing($category, $paginate);
 
         $content->layout = 'profile-posts';
+        $content->session = $this->session;
 
         return view('website.template', (array) $content);
-    }
-
-    public function asyncProfilePostsContent()
-    {
-        return view('website.layout.posts', []);
     }
 
 }

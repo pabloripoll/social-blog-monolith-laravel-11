@@ -3,6 +3,7 @@
 use App\Http\Router\Bootstrap;
 use Illuminate\Support\Facades\Route;
 use App\Http\Router\Web\WebPublicRouter;
+use App\Http\Router\Web\WebMemberRouter;
 
 /*
 |-----------------------------------------------------------------------  /
@@ -36,7 +37,7 @@ Route::get('/profiles/{pid?}', [WebPublicRouter::class, 'profileContent']);
 Route::get('/profiles/{pid}/posts', [WebPublicRouter::class, 'profilePostsContent']);
 
 Route::get('/member/exit/{token}', [WebMemberRouter::class, 'exit']);
-Route::get('/member/login/{token}', [WebMemberRouter::class, 'access']);
+Route::get('/member/init/{token}', [WebMemberRouter::class, 'init']);
 Route::get('/member/profile', [WebMemberRouter::class, 'profile']);
 Route::get('/member/settings', [WebMemberRouter::class, 'settings']);
 
